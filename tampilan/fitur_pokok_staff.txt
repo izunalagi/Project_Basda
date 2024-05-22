@@ -1,0 +1,9 @@
++---------------------------------+
+|         Fitur Pokok             |
++---------------------------------+
+|1. Data Jenis Kelamin            |
+|2. Data Kecamatan                |
+|3. Data Kelurahan                |
+|4. Data Alamat                   |              
+|5. Kembali                       |                                
++---------------------------------+

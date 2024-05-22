@@ -1,0 +1,9 @@
++---------------------------------+
+|         HALO STAFF!!!           |
++---------------------------------+
+|1. Bahan Masuk                   |
+|2. Bahan Keluar                  |
+|3. Ketersediaan Bahan            |
+|4. Data Fitur Pokok              |              
+|5. Keluar Aplikasi               |                                
++---------------------------------+

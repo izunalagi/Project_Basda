@@ -1,0 +1,10 @@
++---------------------------------+
+|         Fitur Pokok             |
++---------------------------------+
+|1. Crud Role                     |
+|2. Crud Jenis Kelamin            |
+|3. Crud Kecamatan                |
+|4. Crud Kelurahan                |
+|5. Crud Alamat                   |              
+|6. Kembali                       |                                
++---------------------------------+
