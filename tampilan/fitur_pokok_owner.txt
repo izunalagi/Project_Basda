@@ -5,6 +5,9 @@
 |2. Crud Jenis Kelamin            |
 |3. Crud Kecamatan                |
 |4. Crud Kelurahan                |
-|5. Crud Alamat                   |              
-|6. Kembali                       |                                
+|5. Crud Alamat                   |
+|6. Crud Merk                     |
+|7. Crud Supplier                 |
+|8. Crud Jenis Bahan              |              
+|9. Kembali                       |                                
 +---------------------------------+
