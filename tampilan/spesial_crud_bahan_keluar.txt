@@ -3,7 +3,7 @@
 +---------------------------------+
 |1. Baca Data                     |
 |2. Tambah Data                   |
-|3. Edit Data                     |                   
-|4. Detail Bahan Masuk            |              
+|3. Edit Data                     |                    
+|4. Detail Bahan Keluar           |              
 |5. Kembali                       |                                
 +---------------------------------+

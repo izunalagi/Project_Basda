@@ -32,6 +32,8 @@ def connect():
 
 
 ################################### JENIS KELAMIN ################################################
+
+
 def read_data_jenis_kelamin():
     try:
         conn = None
@@ -49,21 +51,29 @@ def read_data_jenis_kelamin():
             print("Database connection closed.")
 
 
-def insert_data_jenis_kelamin(id_jenis_kelamin, nama_jenis_kelamin):
+def insert_data_jenis_kelamin():
     try:
         conn = None
         params = config()
         conn = psycopg2.connect(**params)
 
+        nama_jenis_kelamin = input("Masukkan Nama Jenis Kelamin: ")
+
+        # Mendapatkan nilai id_jenis_kelamin maksimum saat ini
+        cur = conn.cursor()
+        cur.execute("SELECT COALESCE(MAX(id_jenis_kelamin), 0) FROM jenis_kelamin")
+        max_id = cur.fetchone()[0]
+        new_id = max_id + 1
+
+        # Insert data dengan id_jenis_kelamin baru
         sql = """
         INSERT INTO jenis_kelamin (id_jenis_kelamin, nama_jenis_kelamin)
         VALUES (%s, %s)
         """
-        cur = conn.cursor()
-        cur.execute(sql, (id_jenis_kelamin, nama_jenis_kelamin))
+        cur.execute(sql, (new_id, nama_jenis_kelamin))
         conn.commit()
         cur.close()
-        print("Data berhasil ditambahkan ke tabel jenis_kelamin.")
+        print(f"Data berhasil ditambahkan ke tabel jenis_kelamin dengan id: {new_id}.")
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
     finally:
@@ -72,11 +82,14 @@ def insert_data_jenis_kelamin(id_jenis_kelamin, nama_jenis_kelamin):
             print("Database connection closed.")
 
 
-def delete_data_jenis_kelamin(id_jenis_kelamin):
+def delete_data_jenis_kelamin():
     try:
         conn = None
         params = config()
         conn = psycopg2.connect(**params)
+
+        read_data_jenis_kelamin()
+        id_jenis_kelamin = int(input("Masukkan Id Jenis Kelamin yang ingin dihapus: "))
 
         sql = "DELETE FROM jenis_kelamin WHERE id_jenis_kelamin = %s"
         cur = conn.cursor()
@@ -92,11 +105,17 @@ def delete_data_jenis_kelamin(id_jenis_kelamin):
             print("Database connection closed.")
 
 
-def update_data_jenis_kelamin(id_jenis_kelamin, nama_jenis_kelamin):
+def update_data_jenis_kelamin():
     try:
         conn = None
         params = config()
         conn = psycopg2.connect(**params)
+
+        read_data_jenis_kelamin()
+        id_jenis_kelamin = int(
+            input("Masukkan Id Jenis Kelamin yang ingin diperbarui: ")
+        )
+        nama_jenis_kelamin = input("Masukkan Nama Jenis Kelamin Baru: ")
 
         sql = """
         UPDATE jenis_kelamin
@@ -118,24 +137,33 @@ def update_data_jenis_kelamin(id_jenis_kelamin, nama_jenis_kelamin):
 
 ################################### JENIS KELAMIN ################################################
 
+
 ################################### ROLE ################################################
-
-
-def insert_data_role(id_role, nama_role, deskripsi):
+def insert_data_role():
     try:
         conn = None
         params = config()
         conn = psycopg2.connect(**params)
 
+        # Meminta input data dari pengguna
+        nama_role = input("Masukkan Nama Role: ")
+        deskripsi = input("Masukkan Deskripsi Role: ")
+
+        # Mendapatkan nilai id_role maksimum saat ini
+        cur = conn.cursor()
+        cur.execute("SELECT COALESCE(MAX(id_role), 0) FROM role")
+        max_id = cur.fetchone()[0]
+        new_id = max_id + 1
+
+        # Insert data dengan id_role baru
         sql = """
         INSERT INTO role (id_role, nama_role, deskripsi)
         VALUES (%s, %s, %s)
         """
-        cur = conn.cursor()
-        cur.execute(sql, (id_role, nama_role, deskripsi))
+        cur.execute(sql, (new_id, nama_role, deskripsi))
         conn.commit()
         cur.close()
-        print("Data berhasil ditambahkan ke tabel role.")
+        print(f"Data berhasil ditambahkan ke tabel role dengan id: {new_id}.")
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
     finally:
@@ -144,11 +172,14 @@ def insert_data_role(id_role, nama_role, deskripsi):
             print("Database connection closed.")
 
 
-def delete_data_role(id_role):
+def delete_data_role():
     try:
         conn = None
         params = config()
         conn = psycopg2.connect(**params)
+
+        read_data_role()
+        id_role = input("Masukkan ID Role yang akan dihapus: ")
 
         sql = "DELETE FROM role WHERE id_role = %s"
         cur = conn.cursor()
@@ -164,11 +195,16 @@ def delete_data_role(id_role):
             print("Database connection closed.")
 
 
-def update_data_role(id_role, nama_role, deskripsi):
+def update_data_role():
     try:
         conn = None
         params = config()
         conn = psycopg2.connect(**params)
+
+        read_data_role()
+        id_role = input("Masukkan ID Role yang akan diupdate: ")
+        nama_role = input("Masukkan Nama Role baru: ")
+        deskripsi = input("Masukkan Deskripsi Role baru: ")
 
         sql = """
         UPDATE role
@@ -195,7 +231,7 @@ def read_data_role():
         params = config()
         conn = psycopg2.connect(**params)
 
-        sql = "SELECT * FROM role"
+        sql = "SELECT * FROM role ORDER BY id_role ASC"
         df = pd.read_sql_query(sql, conn)
         print(tabulate(df, headers="keys", tablefmt="grid"))
     except (Exception, psycopg2.DatabaseError) as error:
@@ -208,9 +244,8 @@ def read_data_role():
 
 ################################### ROLE ################################################
 
+
 ################################### KECAMATAN ################################################
-
-
 def read_data_kecamatan():
     try:
         conn = None
@@ -228,21 +263,29 @@ def read_data_kecamatan():
             print("Database connection closed.")
 
 
-def insert_data_kecamatan(id_kecamatan, nama_kecamatan):
+def insert_data_kecamatan():
     try:
         conn = None
         params = config()
         conn = psycopg2.connect(**params)
 
+        nama_kecamatan = input("Masukkan Nama Kecamatan: ")
+
+        # Mendapatkan nilai id_kecamatan maksimum saat ini
+        cur = conn.cursor()
+        cur.execute("SELECT COALESCE(MAX(id_kecamatan), 0) FROM kecamatan")
+        max_id = cur.fetchone()[0]
+        new_id = max_id + 1
+
+        # Insert data dengan id_kecamatan baru
         sql = """
         INSERT INTO kecamatan (id_kecamatan, nama_kecamatan)
         VALUES (%s, %s)
         """
-        cur = conn.cursor()
-        cur.execute(sql, (id_kecamatan, nama_kecamatan))
+        cur.execute(sql, (new_id, nama_kecamatan))
         conn.commit()
         cur.close()
-        print("Data berhasil ditambahkan ke tabel kecamatan.")
+        print(f"Data berhasil ditambahkan ke tabel kecamatan dengan id: {new_id}.")
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
     finally:
@@ -251,11 +294,13 @@ def insert_data_kecamatan(id_kecamatan, nama_kecamatan):
             print("Database connection closed.")
 
 
-def delete_data_kecamatan(id_kecamatan):
+def delete_data_kecamatan():
     try:
         conn = None
         params = config()
         conn = psycopg2.connect(**params)
+
+        id_kecamatan = input("Masukkan ID Kecamatan yang ingin dihapus: ")
 
         sql = "DELETE FROM kecamatan WHERE id_kecamatan = %s"
         cur = conn.cursor()
@@ -271,11 +316,14 @@ def delete_data_kecamatan(id_kecamatan):
             print("Database connection closed.")
 
 
-def update_data_kecamatan(id_kecamatan, nama_kecamatan):
+def update_data_kecamatan():
     try:
         conn = None
         params = config()
         conn = psycopg2.connect(**params)
+
+        id_kecamatan = input("Masukkan ID Kecamatan yang ingin diupdate: ")
+        nama_kecamatan = input("Masukkan Nama Kecamatan baru: ")
 
         sql = """
         UPDATE kecamatan
@@ -297,218 +345,14 @@ def update_data_kecamatan(id_kecamatan, nama_kecamatan):
 
 ################################### KECAMATAN ################################################
 
-################################### KELURAHAN ################################################
-
-
-def read_data_kelurahan():
-    try:
-        conn = None
-        params = config()
-        conn = psycopg2.connect(**params)
-
-        sql = "SELECT * FROM kelurahan ORDER BY id_kelurahan ASC"
-        df = pd.read_sql_query(sql, conn)
-        print(tabulate(df, headers="keys", tablefmt="grid"))
-    except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
-    finally:
-        if conn is not None:
-            conn.close()
-            print("Database connection closed.")
-
-
-def insert_data_kelurahan(id_kelurahan, nama_kelurahan):
-    try:
-        conn = None
-        params = config()
-        conn = psycopg2.connect(**params)
-
-        sql = """
-        INSERT INTO kelurahan (id_kelurahan, nama_kelurahan)
-        VALUES (%s, %s)
-        """
-        cur = conn.cursor()
-        cur.execute(sql, (id_kelurahan, nama_kelurahan))
-        conn.commit()
-        cur.close()
-        print("Data berhasil ditambahkan ke tabel kelurahan.")
-    except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
-    finally:
-        if conn is not None:
-            conn.close()
-            print("Database connection closed.")
-
-
-def delete_data_kelurahan(id_kelurahan):
-    try:
-        conn = None
-        params = config()
-        conn = psycopg2.connect(**params)
-
-        sql = "DELETE FROM kelurahan WHERE id_kelurahan = %s"
-        cur = conn.cursor()
-        cur.execute(sql, (id_kelurahan,))
-        conn.commit()
-        cur.close()
-        print("Data berhasil dihapus dari tabel kelurahan.")
-    except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
-    finally:
-        if conn is not None:
-            conn.close()
-            print("Database connection closed.")
-
-
-def update_data_kelurahan(id_kelurahan, nama_kelurahan):
-    try:
-        conn = None
-        params = config()
-        conn = psycopg2.connect(**params)
-
-        sql = """
-        UPDATE kelurahan
-        SET nama_kelurahan = %s
-        WHERE id_kelurahan = %s
-        """
-        cur = conn.cursor()
-        cur.execute(sql, (nama_kelurahan, id_kelurahan))
-        conn.commit()
-        cur.close()
-        print("Data berhasil diupdate pada tabel kelurahan.")
-    except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
-    finally:
-        if conn is not None:
-            conn.close()
-            print("Database connection closed.")
-
-
-################################### KELURAHAN ################################################
-
-
-################################### ALAMAT ################################################
-def insert_data_alamat(
-    id_alamat, nama_jalan, no_rumah, kecamatan_id_kecamatan, kelurahan_id_kelurahan
-):
-    try:
-        conn = None
-        params = config()
-        conn = psycopg2.connect(**params)
-
-        sql = """
-        INSERT INTO alamat (Id_Alamat, Nama_Jalan, No_Rumah, Kecamatan_id_kecamatan, Kelurahan_id_kelurahan)
-        VALUES (%s, %s, %s, %s, %s)
-        """
-        cur = conn.cursor()
-        cur.execute(
-            sql,
-            (
-                id_alamat,
-                nama_jalan,
-                no_rumah,
-                kecamatan_id_kecamatan,
-                kelurahan_id_kelurahan,
-            ),
-        )
-        conn.commit()
-        cur.close()
-        print("Data berhasil ditambahkan ke tabel alamat.")
-    except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
-    finally:
-        if conn is not None:
-            conn.close()
-            print("Database connection closed.")
-
-
-def read_data_alamat():
-    try:
-        conn = None
-        params = config()
-        conn = psycopg2.connect(**params)
-
-        sql = "SELECT * FROM alamat"
-        df = pd.read_sql_query(sql, conn)
-        print(tabulate(df, headers="keys", tablefmt="grid"))
-    except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
-    finally:
-        if conn is not None:
-            conn.close()
-            print("Database connection closed.")
-
-
-def update_data_alamat(
-    id_alamat, nama_jalan, no_rumah, kecamatan_id_kecamatan, kelurahan_id_kelurahan
-):
-    try:
-        conn = None
-        params = config()
-        conn = psycopg2.connect(**params)
-
-        sql = """
-        UPDATE alamat
-        SET Nama_Jalan = %s,
-            No_Rumah = %s,
-            Kecamatan_id_kecamatan = %s,
-            Kelurahan_id_kelurahan = %s
-        WHERE Id_Alamat = %s
-        """
-        cur = conn.cursor()
-        cur.execute(
-            sql,
-            (
-                nama_jalan,
-                no_rumah,
-                kecamatan_id_kecamatan,
-                kelurahan_id_kelurahan,
-                id_alamat,
-            ),
-        )
-        conn.commit()
-        cur.close()
-        print("Data berhasil diupdate pada tabel alamat.")
-    except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
-    finally:
-        if conn is not None:
-            conn.close()
-            print("Database connection closed.")
-
-
-def delete_data_alamat(id_alamat):
-    try:
-        conn = None
-        params = config()
-        conn = psycopg2.connect(**params)
-
-        sql = "DELETE FROM alamat WHERE Id_Alamat = %s"
-        cur = conn.cursor()
-        cur.execute(sql, (id_alamat,))
-        conn.commit()
-        cur.close()
-        print("Data berhasil dihapus dari tabel alamat.")
-    except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
-    finally:
-        if conn is not None:
-            conn.close()
-            print("Database connection closed.")
-
-
-################################### ALAMAT ################################################
 
 ################################### AKUN ################################################
-
-
 def read_data_akun():
     try:
         conn = None
         params = config()
         conn = psycopg2.connect(**params)
-
-        sql = "SELECT * FROM akun ORDER BY id_akun ASC"
+        sql = "SELECT * FROM Akun ORDER BY id_Akun ASC"
         df = pd.read_sql_query(sql, conn)
         print(tabulate(df, headers="keys", tablefmt="grid"))
     except (Exception, psycopg2.DatabaseError) as error:
@@ -519,64 +363,72 @@ def read_data_akun():
             print("Database connection closed.")
 
 
-def insert_data_akun(
-    id_akun,
-    username,
-    password,
-    role_id_role,
-    jenis_kelamin_id_jenis_kelamin,
-    alamat_id_alamat,
-    nomor_telepon,
-):
+def insert_data_akun():
     try:
         conn = None
         params = config()
         conn = psycopg2.connect(**params)
 
-        # Get the current date
-        tanggal_masuk = datetime.now().date()
+        # Mendapatkan nilai id_Akun maksimum saat ini
+        cur = conn.cursor()
+        cur.execute("SELECT COALESCE(MAX(id_Akun), 0) FROM Akun")
+        max_id = cur.fetchone()[0]
+        new_id = max_id + 1
+
+        username = input("Enter Username: ")
+        password = input("Enter Password: ")
+        role_id_role = int(input("Enter Role_id_Role: "))
+        jenis_kelamin_id_jenis_kelamin = int(
+            input("Enter Jenis_Kelamin_id_jenis_kelamin: ")
+        )
+        nama_jalan = input("Enter Nama_Jalan: ")
+        no_rumah = int(input("Enter No_Rumah: "))
+        kecamatan_id_kecamatan = int(input("Enter Kecamatan_id_kecamatan: "))
+        nomor_telepon = input("Enter Nomor_Telepon: ")
 
         sql = """
-        INSERT INTO akun (id_akun, username, password, role_id_role, jenis_kelamin_id_jenis_kelamin, alamat_id_alamat, nomor_telepon, tanggal_masuk)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+        INSERT INTO Akun (id_Akun, Username, Password, Role_id_Role, Jenis_Kelamin_id_jenis_kelamin, Nama_Jalan, No_Rumah, Kecamatan_id_kecamatan, Nomor_Telepon, Tanggal_Masuk)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, CURRENT_DATE)
         """
-        cur = conn.cursor()
         cur.execute(
             sql,
             (
-                id_akun,
+                new_id,
                 username,
                 password,
                 role_id_role,
                 jenis_kelamin_id_jenis_kelamin,
-                alamat_id_alamat,
+                nama_jalan,
+                no_rumah,
+                kecamatan_id_kecamatan,
                 nomor_telepon,
-                tanggal_masuk,
             ),
         )
         conn.commit()
         cur.close()
-        print("Data berhasil ditambahkan ke tabel akun.")
+        print(f"Data akun berhasil ditambahkan dengan id: {new_id}.")
     except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
+        print(f"Error: {error}")
     finally:
         if conn is not None:
             conn.close()
             print("Database connection closed.")
 
 
-def delete_data_akun(id_akun):
+def delete_data_akun():
     try:
         conn = None
         params = config()
         conn = psycopg2.connect(**params)
 
-        sql = "DELETE FROM akun WHERE id_akun = %s"
+        id_akun = input("Enter ID Akun to delete: ")
+
+        sql = "DELETE FROM Akun WHERE id_Akun = %s"
         cur = conn.cursor()
         cur.execute(sql, (id_akun,))
         conn.commit()
         cur.close()
-        print("Data berhasil dihapus dari tabel akun.")
+        print("Data berhasil dihapus dari tabel Akun.")
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
     finally:
@@ -585,29 +437,28 @@ def delete_data_akun(id_akun):
             print("Database connection closed.")
 
 
-def update_data_akun(
-    id_akun,
-    username,
-    password,
-    role_id_role,
-    jenis_kelamin_id_jenis_kelamin,
-    alamat_id_alamat,
-    nomor_telepon,
-):
+def update_data_akun():
     try:
         conn = None
         params = config()
         conn = psycopg2.connect(**params)
 
+        id_akun = input("Enter ID Akun to update: ")
+        username = input("Enter new Username: ")
+        password = input("Enter new Password: ")
+        role_id_role = int(input("Enter new Role_id_Role: "))
+        jenis_kelamin_id_jenis_kelamin = int(
+            input("Enter new Jenis_Kelamin_id_jenis_kelamin: ")
+        )
+        nama_jalan = input("Enter new Nama_Jalan: ")
+        no_rumah = int(input("Enter new No_Rumah: "))
+        kecamatan_id_kecamatan = int(input("Enter new Kecamatan_id_kecamatan: "))
+        nomor_telepon = input("Enter new Nomor_Telepon: ")
+
         sql = """
-        UPDATE akun
-        SET username = %s,
-            password = %s,
-            role_id_role = %s,
-            jenis_kelamin_id_jenis_kelamin = %s,
-            alamat_id_alamat = %s,
-            nomor_telepon = %s
-        WHERE id_akun = %s
+        UPDATE Akun
+        SET Username = %s, Password = %s, Role_id_Role = %s, Jenis_Kelamin_id_jenis_kelamin = %s, Nama_Jalan = %s, No_Rumah = %s, Kecamatan_id_kecamatan = %s, Nomor_Telepon = %s
+        WHERE id_Akun = %s
         """
         cur = conn.cursor()
         cur.execute(
@@ -617,14 +468,16 @@ def update_data_akun(
                 password,
                 role_id_role,
                 jenis_kelamin_id_jenis_kelamin,
-                alamat_id_alamat,
+                nama_jalan,
+                no_rumah,
+                kecamatan_id_kecamatan,
                 nomor_telepon,
                 id_akun,
             ),
         )
         conn.commit()
         cur.close()
-        print("Data berhasil diupdate pada tabel akun.")
+        print("Data berhasil diupdate pada tabel Akun.")
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
     finally:
@@ -636,6 +489,916 @@ def update_data_akun(
 ################################### AKUN ################################################
 
 
+################################### MERK ################################################
+def read_data_merk():
+    try:
+        conn = None
+        params = config()
+        conn = psycopg2.connect(**params)
+
+        sql = "SELECT * FROM Merk ORDER BY Id_Merk ASC"
+        df = pd.read_sql_query(sql, conn)
+        print(tabulate(df, headers="keys", tablefmt="grid"))
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+            print("Database connection closed.")
+
+
+def insert_data_merk():
+    try:
+        conn = None
+        params = config()
+        conn = psycopg2.connect(**params)
+
+        nama_merk = input("Masukkan Nama Merk: ")
+
+        # Mendapatkan nilai Id_Merk maksimum saat ini
+        cur = conn.cursor()
+        cur.execute("SELECT COALESCE(MAX(Id_Merk), 0) FROM Merk")
+        max_id = cur.fetchone()[0]
+        new_id = max_id + 1
+
+        # Insert data dengan Id_Merk baru
+        sql = """
+        INSERT INTO Merk (Id_Merk, Nama_Merk)
+        VALUES (%s, %s)
+        """
+        cur.execute(sql, (new_id, nama_merk))
+        conn.commit()
+        cur.close()
+        print(f"Data berhasil ditambahkan ke tabel Merk dengan id: {new_id}.")
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+            print("Database connection closed.")
+
+
+def delete_data_merk():
+    try:
+        conn = None
+        params = config()
+        conn = psycopg2.connect(**params)
+
+        id_merk = input("Masukkan ID Merk yang ingin dihapus: ")
+
+        sql = "DELETE FROM Merk WHERE Id_Merk = %s"
+        cur = conn.cursor()
+        cur.execute(sql, (id_merk,))
+        conn.commit()
+        cur.close()
+        print("Data berhasil dihapus dari tabel Merk.")
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+            print("Database connection closed.")
+
+
+def update_data_merk():
+    try:
+        conn = None
+        params = config()
+        conn = psycopg2.connect(**params)
+
+        id_merk = input("Masukkan ID Merk yang ingin diupdate: ")
+        nama_merk = input("Masukkan Nama Merk baru: ")
+
+        sql = """
+        UPDATE Merk
+        SET Nama_Merk = %s
+        WHERE Id_Merk = %s
+        """
+        cur = conn.cursor()
+        cur.execute(sql, (nama_merk, id_merk))
+        conn.commit()
+        cur.close()
+        print("Data berhasil diupdate pada tabel Merk.")
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+            print("Database connection closed.")
+
+
+################################### MERK ################################################
+
+
+################################### Supplier ################################################
+def read_data_supplier():
+    try:
+        conn = None
+        params = config()
+        conn = psycopg2.connect(**params)
+
+        sql = "SELECT * FROM Supplier ORDER BY id_supplier ASC"
+        df = pd.read_sql_query(sql, conn)
+        print(tabulate(df, headers="keys", tablefmt="grid"))
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+            print("Database connection closed.")
+
+
+def insert_data_supplier():
+    try:
+        conn = None
+        params = config()
+        conn = psycopg2.connect(**params)
+
+        nama_supplier = input("Masukkan Nama Supplier: ")
+
+        # Mendapatkan nilai id_supplier maksimum saat ini
+        cur = conn.cursor()
+        cur.execute("SELECT COALESCE(MAX(id_supplier), 0) FROM Supplier")
+        max_id = cur.fetchone()[0]
+        new_id = max_id + 1
+
+        # Insert data dengan id_supplier baru
+        sql = """
+        INSERT INTO Supplier (id_supplier, nama_supplier)
+        VALUES (%s, %s)
+        """
+        cur.execute(sql, (new_id, nama_supplier))
+        conn.commit()
+        cur.close()
+        print(f"Data berhasil ditambahkan ke tabel Supplier dengan id: {new_id}.")
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+            print("Database connection closed.")
+
+
+def delete_data_supplier():
+    try:
+        conn = None
+        params = config()
+        conn = psycopg2.connect(**params)
+
+        id_supplier = input("Masukkan ID Supplier yang ingin dihapus: ")
+
+        sql = "DELETE FROM Supplier WHERE id_supplier = %s"
+        cur = conn.cursor()
+        cur.execute(sql, (id_supplier,))
+        conn.commit()
+        cur.close()
+        print("Data berhasil dihapus dari tabel Supplier.")
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+            print("Database connection closed.")
+
+
+def update_data_supplier():
+    try:
+        conn = None
+        params = config()
+        conn = psycopg2.connect(**params)
+
+        id_supplier = input("Masukkan ID Supplier yang ingin diupdate: ")
+        nama_supplier = input("Masukkan Nama Supplier baru: ")
+
+        sql = """
+        UPDATE Supplier
+        SET nama_supplier = %s
+        WHERE id_supplier = %s
+        """
+        cur = conn.cursor()
+        cur.execute(sql, (nama_supplier, id_supplier))
+        conn.commit()
+        cur.close()
+        print("Data berhasil diupdate pada tabel Supplier.")
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+            print("Database connection closed.")
+
+
+################################### Supplier ################################################
+
+
+################################### Jenis Bahan ################################################
+def insert_data_jenis_bahan():
+    try:
+        conn = None
+        params = config()
+        conn = psycopg2.connect(**params)
+
+        nama_jenis = input("Masukkan Nama Jenis Bahan: ")
+
+        # Mendapatkan nilai id_jenis_bahan maksimum saat ini
+        cur = conn.cursor()
+        cur.execute("SELECT COALESCE(MAX(id_jenis_bahan), 0) FROM Jenis_Bahan")
+        max_id = cur.fetchone()[0]
+        new_id = max_id + 1
+
+        # Insert data dengan id_jenis_bahan baru
+        sql = """
+        INSERT INTO Jenis_Bahan (id_jenis_bahan, nama_jenis)
+        VALUES (%s, %s)
+        """
+        cur.execute(sql, (new_id, nama_jenis))
+        conn.commit()
+        cur.close()
+        print(f"Data berhasil ditambahkan ke tabel Jenis_Bahan dengan id: {new_id}.")
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+            print("Database connection closed.")
+
+
+def read_data_jenis_bahan():
+    try:
+        conn = None
+        params = config()
+        conn = psycopg2.connect(**params)
+
+        sql = "SELECT * FROM Jenis_Bahan ORDER BY id_jenis_bahan"
+        df = pd.read_sql_query(sql, conn)
+        print(tabulate(df, headers="keys", tablefmt="grid"))
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+            print("Database connection closed.")
+
+
+def update_data_jenis_bahan():
+    try:
+        conn = None
+        params = config()
+        conn = psycopg2.connect(**params)
+
+        id_jenis_bahan = int(input("Masukkan ID Jenis Bahan yang ingin diupdate: "))
+        nama_jenis = input("Masukkan Nama Jenis Bahan baru: ")
+
+        sql = """
+        UPDATE Jenis_Bahan
+        SET nama_jenis = %s
+        WHERE id_jenis_bahan = %s
+        """
+        cur = conn.cursor()
+        cur.execute(sql, (nama_jenis, id_jenis_bahan))
+        conn.commit()
+        cur.close()
+        print("Data berhasil diupdate pada tabel Jenis_Bahan.")
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+            print("Database connection closed.")
+
+
+def delete_data_jenis_bahan():
+    try:
+        conn = None
+        params = config()
+        conn = psycopg2.connect(**params)
+
+        id_jenis_bahan = int(input("Masukkan ID Jenis Bahan yang ingin dihapus: "))
+
+        sql = "DELETE FROM Jenis_Bahan WHERE id_jenis_bahan = %s"
+        cur = conn.cursor()
+        cur.execute(sql, (id_jenis_bahan,))
+        conn.commit()
+        cur.close()
+        print("Data berhasil dihapus dari tabel Jenis_Bahan.")
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+            print("Database connection closed.")
+
+
+################################### Jenis Bahan ################################################
+
+
+################################### Ketersediaan Bahan ################################################
+def read_data_ketersediaan_bahan():
+    try:
+        conn = None
+        params = config()
+        conn = psycopg2.connect(**params)
+
+        sql = "SELECT * FROM Ketersediaan_Bahan ORDER BY id_ketersediaan_bahan ASC"
+        df = pd.read_sql_query(sql, conn)
+        print(tabulate(df, headers="keys", tablefmt="grid"))
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+            print("Database connection closed.")
+
+
+def insert_data_ketersediaan_bahan():
+    try:
+        conn = None
+        params = config()
+        conn = psycopg2.connect(**params)
+
+        nama_bahan = input("Masukkan Nama Bahan: ")
+        stock = int(input("Masukkan Stock: "))
+        deskripsi = input("Masukkan Deskripsi: ")
+        jenis_bahan_id_jenis_bahan = int(input("Masukkan ID Jenis Bahan: "))
+        merk_id_merk = int(input("Masukkan ID Merk: "))
+
+        # Mendapatkan nilai id_ketersediaan_bahan maksimum saat ini
+        cur = conn.cursor()
+        cur.execute(
+            "SELECT COALESCE(MAX(id_ketersediaan_bahan), 0) FROM Ketersediaan_Bahan"
+        )
+        max_id = cur.fetchone()[0]
+        new_id = max_id + 1
+
+        # Insert data dengan id_ketersediaan_bahan baru
+        sql = """
+        INSERT INTO Ketersediaan_Bahan (id_ketersediaan_bahan, nama_bahan, stock, deskripsi, jenis_bahan_id_jenis_bahan, merk_id_merk)
+        VALUES (%s, %s, %s, %s, %s, %s)
+        """
+        cur.execute(
+            sql,
+            (
+                new_id,
+                nama_bahan,
+                stock,
+                deskripsi,
+                jenis_bahan_id_jenis_bahan,
+                merk_id_merk,
+            ),
+        )
+        conn.commit()
+        cur.close()
+        print(
+            f"Data berhasil ditambahkan ke tabel Ketersediaan_Bahan dengan id: {new_id}."
+        )
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+            print("Database connection closed.")
+
+
+def delete_data_ketersediaan_bahan():
+    try:
+        conn = None
+        params = config()
+        conn = psycopg2.connect(**params)
+
+        id_ketersediaan_bahan = int(
+            input("Masukkan ID Ketersediaan Bahan yang ingin dihapus: ")
+        )
+
+        sql = "DELETE FROM Ketersediaan_Bahan WHERE id_ketersediaan_bahan = %s"
+        cur = conn.cursor()
+        cur.execute(sql, (id_ketersediaan_bahan,))
+        conn.commit()
+        cur.close()
+        print("Data berhasil dihapus dari tabel Ketersediaan_Bahan.")
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+            print("Database connection closed.")
+
+
+def update_data_ketersediaan_bahan():
+    try:
+        conn = None
+        params = config()
+        conn = psycopg2.connect(**params)
+
+        id_ketersediaan_bahan = int(
+            input("Masukkan ID Ketersediaan Bahan yang ingin diupdate: ")
+        )
+        nama_bahan = input("Masukkan Nama Bahan baru: ")
+        stock = int(input("Masukkan Stock baru: "))
+        deskripsi = input("Masukkan Deskripsi baru: ")
+        jenis_bahan_id_jenis_bahan = int(input("Masukkan ID Jenis Bahan baru: "))
+        merk_id_merk = int(input("Masukkan ID Merk baru: "))
+
+        sql = """
+        UPDATE Ketersediaan_Bahan
+        SET nama_bahan = %s,
+            stock = %s,
+            deskripsi = %s,
+            jenis_bahan_id_jenis_bahan = %s,
+            merk_id_merk = %s
+        WHERE id_ketersediaan_bahan = %s
+        """
+        cur = conn.cursor()
+        cur.execute(
+            sql,
+            (
+                nama_bahan,
+                stock,
+                deskripsi,
+                jenis_bahan_id_jenis_bahan,
+                merk_id_merk,
+                id_ketersediaan_bahan,
+            ),
+        )
+        conn.commit()
+        cur.close()
+        print("Data berhasil diupdate pada tabel Ketersediaan_Bahan.")
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+            print("Database connection closed.")
+
+
+################################### Ketersediaan Bahan ################################################
+
+
+################################### BAHAN MASUK ################################################
+def read_data_bahan_masuk():
+    try:
+        conn = None
+        params = config()
+        conn = psycopg2.connect(**params)
+        sql = "SELECT * FROM Bahan_Masuk ORDER BY id_bahan_masuk ASC"
+        df = pd.read_sql_query(sql, conn)
+        print(tabulate(df, headers="keys", tablefmt="grid"))
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+            print("Database connection closed.")
+
+
+def insert_data_bahan_masuk(akun_id_akun):
+    try:
+        conn = None
+        params = config()
+        conn = psycopg2.connect(**params)
+
+        sql = """
+        INSERT INTO bahan_masuk (akun_id_akun, tanggal)
+        VALUES (%s, CURRENT_DATE)
+        RETURNING id_bahan_masuk
+        """
+        cur = conn.cursor()
+        cur.execute(sql, (akun_id_akun,))
+        id_bahan_masuk_baru = cur.fetchone()[0]
+        conn.commit()
+        cur.close()
+        print(
+            f"Data bahan masuk berhasil ditambahkan dengan id: {id_bahan_masuk_baru}."
+        )
+        return id_bahan_masuk_baru
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(f"Error: {error}")
+    finally:
+        if conn is not None:
+            conn.close()
+            print("Database connection closed.")
+
+
+def delete_data_bahan_masuk(id_bahan_masuk):
+    try:
+        conn = None
+        params = config()
+        conn = psycopg2.connect(**params)
+        sql = "DELETE FROM Bahan_Masuk WHERE id_bahan_masuk = %s"
+        cur = conn.cursor()
+        cur.execute(sql, (id_bahan_masuk,))
+        conn.commit()
+        cur.close()
+        print("Data berhasil dihapus dari tabel Bahan_Masuk.")
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+            print("Database connection closed.")
+
+
+def update_data_bahan_masuk(id_bahan_masuk, akun_id_akun):
+    try:
+        conn = None
+        params = config()
+        conn = psycopg2.connect(**params)
+
+        id_bahan_masuk = input("Masukkan ID Bahan Masuk yang ingin diperbarui: ")
+        akun_id_akun = input("Masukkan ID Akun Baru: ")
+
+        sql = """
+        UPDATE Bahan_Masuk
+        SET akun_id_akun = %s
+        WHERE id_bahan_masuk = %s
+        """
+        cur = conn.cursor()
+        cur.execute(sql, (akun_id_akun, id_bahan_masuk))
+        conn.commit()
+        cur.close()
+        print("Data berhasil diupdate pada tabel Bahan_Masuk.")
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+            print("Database connection closed.")
+
+
+def add_bahan_masuk_and_detail():
+    akun_id_akun = int(input("Enter akun_id_akun: "))
+
+    # Membuat data bahan masuk baru dan mendapatkan id_bahan_masuk yang dihasilkan
+    id_bahan_masuk_baru = insert_data_bahan_masuk(akun_id_akun)
+
+    if id_bahan_masuk_baru is not None:
+        while True:
+            id_supplier = int(input("Enter id_supplier: "))
+            read_data_ketersediaan_bahan()
+            id_ketersediaan_bahan = int(input("Enter id_ketersediaan_bahan: "))
+            quantity = int(input("Enter quantity: "))
+            deskripsi = input("Enter deskripsi: ")
+
+            insert_data_detail_bahan_masuk(
+                id_bahan_masuk_baru,
+                id_supplier,
+                id_ketersediaan_bahan,
+                quantity,
+                deskripsi,
+            )
+
+            add_more = input(
+                "Apakah mau menambahkan barang masuk lagi? (ya/tidak): "
+            ).lower()
+            if add_more != "ya":
+                break
+    else:
+        print("Gagal membuat data bahan masuk baru.")
+
+
+################################### BAHAN MASUK ################################################
+
+
+################################### Detail BAHAN MASUK ################################################
+
+
+def read_data_detail_bahan_masuk():
+    try:
+        conn = None
+        params = config()
+        conn = psycopg2.connect(**params)
+        sql = "SELECT * FROM detail_bahan_masuk ORDER BY id_detail_bahan_masuk ASC"
+        df = pd.read_sql_query(sql, conn)
+        print(tabulate(df, headers="keys", tablefmt="grid"))
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+            print("Database connection closed.")
+
+
+def insert_data_detail_bahan_masuk(
+    id_bahan_masuk, id_supplier, id_ketersediaan_bahan, quantity, deskripsi
+):
+    try:
+        conn = None
+        params = config()
+        conn = psycopg2.connect(**params)
+
+        sql = """
+        INSERT INTO detail_bahan_masuk (id_bahan_masuk, id_supplier, id_ketersediaan_bahan, quantity, deskripsi)
+        VALUES (%s, %s, %s, %s, %s)
+        """
+        cur = conn.cursor()
+        cur.execute(
+            sql,
+            (id_bahan_masuk, id_supplier, id_ketersediaan_bahan, quantity, deskripsi),
+        )
+        conn.commit()
+        cur.close()
+        print("Data detail bahan masuk berhasil ditambahkan.")
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(f"Error: {error}")
+    finally:
+        if conn is not None:
+            conn.close()
+            print("Database connection closed.")
+
+
+def delete_data_detail_bahan_masuk(id_detail_bahan_masuk):
+    try:
+        conn = None
+        params = config()
+        conn = psycopg2.connect(**params)
+        sql = "DELETE FROM detail_bahan_masuk WHERE id_detail_bahan_masuk = %s"
+        cur = conn.cursor()
+        cur.execute(sql, (id_detail_bahan_masuk,))
+        conn.commit()
+        cur.close()
+        print("Data berhasil dihapus dari tabel detail_bahan_masuk.")
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+            print("Database connection closed.")
+
+
+def update_data_detail_bahan_masuk(
+    id_detail_bahan_masuk,
+    id_bahan_masuk,
+    id_supplier,
+    id_ketersediaan_bahan,
+    quantity,
+    deskripsi,
+):
+    try:
+        conn = None
+        params = config()
+        conn = psycopg2.connect(**params)
+        sql = """
+        UPDATE detail_bahan_masuk
+        SET id_bahan_masuk = %s,
+            id_supplier = %s,
+            id_ketersediaan_bahan = %s,
+            quantity = %s,
+            deskripsi = %s
+        WHERE id_detail_bahan_masuk = %s
+        """
+        cur = conn.cursor()
+        cur.execute(
+            sql,
+            (
+                id_bahan_masuk,
+                id_supplier,
+                id_ketersediaan_bahan,
+                quantity,
+                deskripsi,
+                id_detail_bahan_masuk,
+            ),
+        )
+        conn.commit()
+        cur.close()
+        print("Data berhasil diupdate pada tabel detail_bahan_masuk.")
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+            print("Database connection closed.")
+
+
+################################### Detail BAHAN MASUK ################################################
+
+
+################################### BAHAN Keluar ################################################
+def read_data_bahan_keluar():
+    try:
+        conn = None
+        params = config()
+        conn = psycopg2.connect(**params)
+        sql = "SELECT * FROM Bahan_Keluar ORDER BY id_bahan_keluar ASC"
+        df = pd.read_sql_query(sql, conn)
+        print(tabulate(df, headers="keys", tablefmt="grid"))
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+            print("Database connection closed.")
+
+
+def insert_data_bahan_keluar(akun_id_akun):
+    try:
+        conn = None
+        params = config()
+        conn = psycopg2.connect(**params)
+
+        sql = """
+        INSERT INTO bahan_keluar (akun_id_akun, tanggal)
+        VALUES (%s, CURRENT_DATE)
+        RETURNING id_bahan_keluar
+        """
+        cur = conn.cursor()
+        cur.execute(sql, (akun_id_akun,))
+        id_bahan_keluar_baru = cur.fetchone()[0]
+        conn.commit()
+        cur.close()
+        print(
+            f"Data bahan keluar berhasil ditambahkan dengan id: {id_bahan_keluar_baru}."
+        )
+        return id_bahan_keluar_baru
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(f"Error: {error}")
+    finally:
+        if conn is not None:
+            conn.close()
+            print("Database connection closed.")
+
+
+def delete_data_bahan_keluar(id_bahan_keluar):
+    try:
+        conn = None
+        params = config()
+        conn = psycopg2.connect(**params)
+        sql = "DELETE FROM Bahan_Keluar WHERE id_bahan_keluar = %s"
+        cur = conn.cursor()
+        cur.execute(sql, (id_bahan_keluar,))
+        conn.commit()
+        cur.close()
+        print("Data berhasil dihapus dari tabel Bahan_Keluar.")
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+            print("Database connection closed.")
+
+
+def update_data_bahan_keluar():
+    try:
+        conn = None
+        params = config()
+        conn = psycopg2.connect(**params)
+
+        id_bahan_keluar = input("Masukkan ID Bahan Keluar yang ingin diperbarui: ")
+        akun_id_akun = input("Masukkan ID Akun Baru: ")
+
+        sql = """
+        UPDATE Bahan_Keluar
+        SET akun_id_akun = %s
+        WHERE id_bahan_keluar = %s
+        """
+        cur = conn.cursor()
+        cur.execute(sql, (akun_id_akun, id_bahan_keluar))
+        conn.commit()
+        cur.close()
+        print("Data berhasil diupdate pada tabel Bahan_Keluar.")
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+            print("Database connection closed.")
+
+
+def add_bahan_keluar_and_detail():
+    akun_id_akun = int(input("Enter akun_id_akun: "))
+
+    # Membuat data bahan keluar baru dan mendapatkan id_bahan_keluar yang dihasilkan
+    id_bahan_keluar_baru = insert_data_bahan_keluar(akun_id_akun)
+
+    if id_bahan_keluar_baru is not None:
+        while True:
+            id_ketersediaan_bahan = int(input("Enter id_ketersediaan_bahan: "))
+            quantity = int(input("Enter quantity: "))
+            deskripsi = input("Enter deskripsi: ")
+
+            insert_data_detail_bahan_keluar(
+                id_bahan_keluar_baru,
+                id_ketersediaan_bahan,
+                quantity,
+                deskripsi,
+            )
+
+            add_more = input(
+                "Apakah mau menambahkan barang keluar lagi? (ya/tidak): "
+            ).lower()
+            if add_more != "ya":
+                break
+    else:
+        print("Gagal membuat data bahan keluar baru.")
+
+
+################################### BAHAN Keluar ################################################
+
+
+################################### Detail BAHAN KElUAR ################################################
+def read_data_detail_bahan_keluar():
+    try:
+        conn = None
+        params = config()
+        conn = psycopg2.connect(**params)
+        sql = "SELECT * FROM detail_bahan_keluar ORDER BY id_detail_bahan_keluar ASC"
+        df = pd.read_sql_query(sql, conn)
+        print(tabulate(df, headers="keys", tablefmt="grid"))
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+            print("Database connection closed.")
+
+
+def insert_data_detail_bahan_keluar(
+    id_bahan_keluar, id_ketersediaan_bahan, quantity, deskripsi
+):
+    try:
+        conn = None
+        params = config()
+        conn = psycopg2.connect(**params)
+
+        sql = """
+        INSERT INTO detail_bahan_keluar (id_bahan_keluar, id_ketersediaan_bahan, quantity, deskripsi)
+        VALUES (%s, %s, %s, %s)
+        """
+        cur = conn.cursor()
+        cur.execute(
+            sql,
+            (id_bahan_keluar, id_ketersediaan_bahan, quantity, deskripsi),
+        )
+        conn.commit()
+        cur.close()
+        print("Data detail bahan keluar berhasil ditambahkan.")
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(f"Error: {error}")
+    finally:
+        if conn is not None:
+            conn.close()
+            print("Database connection closed.")
+
+
+def delete_data_detail_bahan_keluar(id_detail_bahan_keluar):
+    try:
+        conn = None
+        params = config()
+        conn = psycopg2.connect(**params)
+        sql = "DELETE FROM detail_bahan_keluar WHERE id_detail_bahan_keluar = %s"
+        cur = conn.cursor()
+        cur.execute(sql, (id_detail_bahan_keluar,))
+        conn.commit()
+        cur.close()
+        print("Data berhasil dihapus dari tabel detail_bahan_keluar.")
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+            print("Database connection closed.")
+
+
+def update_data_detail_bahan_keluar(
+    id_detail_bahan_keluar,
+    id_bahan_keluar,
+    id_ketersediaan_bahan,
+    quantity,
+    deskripsi,
+):
+    try:
+        conn = None
+        params = config()
+        conn = psycopg2.connect(**params)
+        sql = """
+        UPDATE detail_bahan_keluar
+        SET id_bahan_keluar = %s,
+            id_ketersediaan_bahan = %s,
+            quantity = %s,
+            deskripsi = %s
+        WHERE id_detail_bahan_keluar = %s
+        """
+        cur = conn.cursor()
+        cur.execute(
+            sql,
+            (
+                id_bahan_keluar,
+                id_ketersediaan_bahan,
+                quantity,
+                deskripsi,
+                id_detail_bahan_keluar,
+            ),
+        )
+        conn.commit()
+        cur.close()
+        print("Data berhasil diupdate pada tabel detail_bahan_keluar.")
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+            print("Database connection closed.")
+
+
+################################### Detail BAHAN KELUAR ################################################
 ################################### LOGIN ################################################
 def login(username, password):
     os.system("cls")
@@ -681,10 +1444,11 @@ def login(username, password):
 def main():
     os.system("cls")
     while True:
-        print("Selamat datang di (Batik Karimata) Bataka Jember")
-        print("MENU")
-        print("1.Login")
-        print("2.Keluar Aplikasi")
+        namafile = "tampilan/login.txt"
+        with open(namafile, "r") as file:
+            isi_file = file.read()
+            print(isi_file)
+
         user_input = input("Masukkan opsi: ")
         if user_input == "1":
             username = input("Masukkan username: ")
@@ -703,22 +1467,18 @@ def main():
 def allfitur_Owner():
     os.system("cls")
     while True:
-        print("HALO OWNER!!")
-        print("MENU:")
-        print("1.Bahan")
-        print("2.Bahan Keluar")
-        print("3.Ketersediaan Bahan")
-        print("4.Fitur Pokok")
-        print("5.Tambah Data AKUN")
-        print("6.Keluar Aplikasi")
+        namafile = "tampilan/allfitur_owner.txt"
+        with open(namafile, "r") as file:
+            isi_file = file.read()
+            print(isi_file)
 
         user_input = input("pilih opsi: ")
         if user_input == "1":
-            print("belum ada fitur dek")
+            menu_crud_bahan_masuk_owner()
         elif user_input == "2":
-            print("belum ada fitur")
+            menu_crud_bahan_keluar_owner()
         elif user_input == "3":
-            print("Belum ada fitur")
+            menu_crud_ketersediaan_bahan_owner()
         elif user_input == "4":
             fiturpokok_owner()
         elif user_input == "5":
@@ -736,21 +1496,18 @@ def allfitur_Owner():
 def allfitur_Staff():
     os.system("cls")
     while True:
-        print("HALO STAFF!!")
-        print("MENU:")
-        print("1.Bahan")
-        print("2.Bahan Keluar")
-        print("3.Ketersediaan Bahan")
-        print("4.Data Fitur Pokok")
-        print("5.Keluar Aplikasi")
+        namafile = "tampilan/allfitur_staff.txt"
+        with open(namafile, "r") as file:
+            isi_file = file.read()
+            print(isi_file)
 
         user_input = input("pilih opsi: ")
         if user_input == "1":
-            print("belum ada fitur dek")
+            menu_crud_bahan_masuk_staff()
         elif user_input == "2":
-            print("belum ada fitur")
+            menu_crud_bahan_keluar_staff()
         elif user_input == "3":
-            print("Belum ada fitur")
+            menu_crud_ketersediaan_bahan_staff()
         elif user_input == "4":
             fiturpokok_staff()
         elif user_input == "5":
@@ -762,83 +1519,41 @@ def allfitur_Staff():
 ################################### ONLY FOR STAFF ################################################
 
 
-################################### CRUD AKUN ################################################
+################################### MENU CRUD AKUN ################################################
 def daftar_Tambah_Data():
     os.system("cls")
     while True:
-        print("Menu:")
-        print("1.Data akun")
-        print("2.Tambah Akun")
-        print("3.Edit Data")
-        print("4.Delete Akun")
-        print("5.Kembali")
+        namafile = "tampilan/all_menu_crud.txt"
+        with open(namafile, "r") as file:
+            isi_file = file.read()
+            print(isi_file)
 
         user_input = input("Pilih opsi: ")
         if user_input == "1":
             read_data_akun()
         elif user_input == "2":
-            id_akun = input("Masukkan id_akun: ")
-            username = input("Masukkan username: ")
-            password = input("Masukkan password: ")
-            role_id_role = input("Masukkan role_id_role: ")
-            jenis_kelamin_id_jenis_kelamin = input(
-                "Masukkan jenis_kelamin_id_jenis_kelamin: "
-            )
-            alamat_id_alamat = input("Masukkan alamat_id_alamat: ")
-            nomor_telepon = input("Masukkan nomor_telepon: ")
-            insert_data_akun(
-                id_akun,
-                username,
-                password,
-                role_id_role,
-                jenis_kelamin_id_jenis_kelamin,
-                alamat_id_alamat,
-                nomor_telepon,
-            )
-
+            insert_data_akun()
         elif user_input == "3":
-            id_akun = input("Masukkan id_akun yang ingin diupdate: ")
-            username = input("Masukkan username baru: ")
-            password = input("Masukkan password baru: ")
-            role_id_role = input("Masukkan role_id_role baru: ")
-            jenis_kelamin_id_jenis_kelamin = input(
-                "Masukkan jenis_kelamin_id_jenis_kelamin baru: "
-            )
-            alamat_id_alamat = input("Masukkan alamat_id_alamat baru: ")
-            nomor_telepon = input("Masukkan nomor_telepon baru: ")
-
-            # Panggil fungsi untuk mengupdate data akun
-            update_data_akun(
-                id_akun,
-                username,
-                password,
-                role_id_role,
-                jenis_kelamin_id_jenis_kelamin,
-                alamat_id_alamat,
-                nomor_telepon,
-            )
+            update_data_akun()
         elif user_input == "4":
-            id_akun = input("Masukkan ID Akun yang akan dihapus: ")
-            delete_data_akun(id_akun)
+            delete_data_akun()
         elif user_input == "5":
             allfitur_Owner()
         else:
-            print("Opsi Tidak Valid")
+            print("Opsi Tidak valid")
 
 
-################################### CRUD AKUN ################################################
+################################### MENU CRUD AKUN ################################################
 
 
 ################################### Fitur Pokok For owner ################################################
 def fiturpokok_owner():
     os.system("cls")
     while True:
-        print("1.Crud Role")
-        print("2.Crud Jenis_Kelamin ")
-        print("3.Crud Kecamatan")
-        print("4.Crud Kelurahan")
-        print("5.Crud Alamat")
-        print("6.Kembali")
+        namafile = "tampilan/fitur_pokok_owner.txt"
+        with open(namafile, "r") as file:
+            isi_file = file.read()
+            print(isi_file)
 
         user_input = input("Pilih Opsi: ")
 
@@ -849,10 +1564,16 @@ def fiturpokok_owner():
         elif user_input == "3":
             menu_crud_kecamatan()
         elif user_input == "4":
-            print("belum")
+            print("dihapus")
         elif user_input == "5":
-            print("belum")
+            print("dihapus")
         elif user_input == "6":
+            menu_crud_merk()
+        elif user_input == "7":
+            menu_crud_supplier()
+        elif user_input == "8":
+            menu_crud_jenis_bahan()
+        elif user_input == "9":
             allfitur_Owner()
         else:
             print("Opsi Tidak valid")
@@ -865,23 +1586,20 @@ def fiturpokok_owner():
 def fiturpokok_staff():
     os.system("cls")
     while True:
-        print("1.Data Jenis_Kelamin ")
-        print("2.Data Kecamatan")
-        print("3.Data Kelurahan")
-        print("4.Data Alamat")
-        print("5.Kembali")
+        namafile = "tampilan/fitur_pokok_staff.txt"
+        with open(namafile, "r") as file:
+            isi_file = file.read()
+            print(isi_file)
 
         user_input = input("Pilih Opsi: ")
 
         if user_input == "1":
-            read_data_jenis_kelamin()
+            read_data_merk()
         elif user_input == "2":
-            read_data_kecamatan()
+            read_data_supplier()
         elif user_input == "3":
-            read_data_kelurahan()
+            read_data_jenis_bahan()
         elif user_input == "4":
-            read_data_alamat()
-        elif user_input == "5":
             allfitur_Staff()
         else:
             print("Opsi Tidak valid")
@@ -894,29 +1612,21 @@ def fiturpokok_staff():
 def menu_crud_role():
     os.system("cls")
     while True:
-        print("1.Baca Data")
-        print("2.Tambah Data")
-        print("3.Edit Data")
-        print("4.Hapus Data")
-        print("5.Kembali")
+        namafile = "tampilan/all_menu_crud.txt"
+        with open(namafile, "r") as file:
+            isi_file = file.read()
+            print(isi_file)
 
         user_input = input("Pilih Opsi: ")
 
         if user_input == "1":
             read_data_role()
         elif user_input == "2":
-            id_role = input("Masukkan ID Role: ")
-            nama_role = input("Masukkan Nama Role: ")
-            deskripsi = input("Masukkan Deskripsi: ")
-            insert_data_role(id_role, nama_role, deskripsi)
+            insert_data_role()
         elif user_input == "3":
-            id_role = input("Masukkan ID Role yang akan diupdate: ")
-            nama_role = input("Masukkan Nama Role baru: ")
-            deskripsi = input("Masukkan Deskripsi baru: ")
-            update_data_role(id_role, nama_role, deskripsi)
+            update_data_role()
         elif user_input == "4":
-            id_role = input("Masukkan ID Role yang akan dihapus: ")
-            delete_data_role(id_role)
+            delete_data_role()
         elif user_input == "5":
             fiturpokok_owner()
         else:
@@ -930,27 +1640,20 @@ def menu_crud_role():
 def menu_crud_jenis_kelamin():
     os.system("cls")
     while True:
-        print("1.Baca Data")
-        print("2.Tambah Data")
-        print("3.Edit Data")
-        print("4.Hapus Data")
-        print("5.Kembali")
+        namafile = "tampilan/all_menu_crud.txt"
+        with open(namafile, "r") as file:
+            isi_file = file.read()
+            print(isi_file)
 
         user_input = input("Pilih Opsi: ")
-
         if user_input == "1":
             read_data_jenis_kelamin()
         elif user_input == "2":
-            id_jenis_kelamin = input("Masukkan ID Jenis Kelamin: ")
-            nama_jenis_kelamin = input("Masukkan Nama Jenis Kelamin: ")
-            insert_data_jenis_kelamin(id_jenis_kelamin, nama_jenis_kelamin)
+            insert_data_jenis_kelamin()
         elif user_input == "3":
-            id_jenis_kelamin = input("Masukkan ID Jenis Kelamin yang akan diupdate: ")
-            nama_jenis_kelamin = input("Masukkan Nama Jenis Kelamin baru: ")
-            update_data_jenis_kelamin(id_jenis_kelamin, nama_jenis_kelamin)
+            update_data_jenis_kelamin()
         elif user_input == "4":
-            id_jenis_kelamin = input("Masukkan ID Jenis Kelamin yang akan dihapus: ")
-            delete_data_jenis_kelamin(id_jenis_kelamin)
+            delete_data_jenis_kelamin()
         elif user_input == "5":
             fiturpokok_owner()
         else:
@@ -964,27 +1667,20 @@ def menu_crud_jenis_kelamin():
 def menu_crud_kecamatan():
     os.system("cls")
     while True:
-        print("1.Baca Data")
-        print("2.Tambah Data")
-        print("3.Edit Data")
-        print("4.Hapus Data")
-        print("5.Kembali")
+        namafile = "tampilan/all_menu_crud.txt"
+        with open(namafile, "r") as file:
+            isi_file = file.read()
+            print(isi_file)
 
         user_input = input("Pilih Opsi: ")
-
         if user_input == "1":
             read_data_kecamatan()
         elif user_input == "2":
-            id_kecamatan = input("Masukkan ID Kecamatan: ")
-            nama_kecamatan = input("Masukkan Nama Kecamatan: ")
-            insert_data_kecamatan(id_kecamatan, nama_kecamatan)
+            insert_data_kecamatan()
         elif user_input == "3":
-            id_kecamatan = input("Masukkan ID Kecamatan yang akan diupdate: ")
-            nama_kecamatan = input("Masukkan Nama Kecamatan baru: ")
-            update_data_kecamatan(id_kecamatan, nama_kecamatan)
+            update_data_kecamatan()
         elif user_input == "4":
-            id_kecamatan = input("Masukkan ID Kecamatan yang akan dihapus: ")
-            delete_data_kecamatan(id_kecamatan)
+            delete_data_kecamatan()
         elif user_input == "5":
             fiturpokok_owner()
         else:
@@ -994,304 +1690,342 @@ def menu_crud_kecamatan():
 ################################### MENU CRUD Kecamatan ################################################
 
 
-################################### MENU CRUD Kecamatan ################################################
-def menu_crud_kecamatan():
+################################### MENU CRUD MERK ################################################
+def menu_crud_merk():
     os.system("cls")
     while True:
-        print("1.Baca Data")
-        print("2.Tambah Data")
-        print("3.Edit Data")
-        print("4.Hapus Data")
-        print("5.Kembali")
+        namafile = "tampilan/all_menu_crud.txt"
+        with open(namafile, "r") as file:
+            isi_file = file.read()
+            print(isi_file)
 
         user_input = input("Pilih Opsi: ")
 
         if user_input == "1":
-            read_data_kecamatan()
+            read_data_merk()
         elif user_input == "2":
-            id_kecamatan = input("Masukkan ID Kecamatan: ")
-            nama_kecamatan = input("Masukkan Nama Kecamatan: ")
-            insert_data_kecamatan(id_kecamatan, nama_kecamatan)
+            insert_data_merk()
         elif user_input == "3":
-            id_kecamatan = input("Masukkan ID Kecamatan yang akan diupdate: ")
-            nama_kecamatan = input("Masukkan Nama Kecamatan baru: ")
-            update_data_kecamatan(id_kecamatan, nama_kecamatan)
+            update_data_merk()
         elif user_input == "4":
-            id_kecamatan = input("Masukkan ID Kecamatan yang akan dihapus: ")
-            delete_data_kecamatan(id_kecamatan)
+            delete_data_merk()
         elif user_input == "5":
             fiturpokok_owner()
         else:
             print("Opsi Tidak valid")
 
 
-################################### MENU CRUD Kecamatan ################################################
+################################### MENU CRUD MERK ################################################
 
 
-################################### MENU CRUD Kelurahan ################################################
-def menu_crud_kelurahan():
+################################### MENU CRUD Supplier ################################################
+def menu_crud_supplier():
     os.system("cls")
     while True:
-        print("1.Baca Data")
-        print("2.Tambah Data")
-        print("3.Edit Data")
-        print("4.Hapus Data")
-        print("5.Kembali")
+        namafile = "tampilan/all_menu_crud.txt"
+        with open(namafile, "r") as file:
+            isi_file = file.read()
+            print(isi_file)
 
         user_input = input("Pilih Opsi: ")
 
         if user_input == "1":
-            read_data_kelurahan()
+            read_data_supplier()
         elif user_input == "2":
-            id_kelurahan = input("Masukkan ID Kelurahan: ")
-            nama_kelurahan = input("Masukkan Nama Kelurahan: ")
-            insert_data_kelurahan(id_kelurahan, nama_kelurahan)
+            insert_data_supplier()
         elif user_input == "3":
-            id_kelurahan = input("Masukkan ID Kelurahan yang akan diupdate: ")
-            nama_kelurahan = input("Masukkan Nama Kelurahan baru: ")
-            update_data_kelurahan(id_kelurahan, nama_kelurahan)
+            update_data_supplier()
         elif user_input == "4":
-            id_kelurahan = input("Masukkan ID Kelurahan yang akan dihapus: ")
-            delete_data_kelurahan(id_kelurahan)
+            delete_data_supplier()
         elif user_input == "5":
             fiturpokok_owner()
         else:
             print("Opsi Tidak valid")
 
 
-################################### MENU CRUD kelurahan ################################################
+################################### MENU CRUD Supplier ################################################
 
 
-################################### MENU CRUD Alamat ################################################
-def menu_crud_alamat():
+################################### MENU CRUD Jenis Bahan ################################################
+def menu_crud_jenis_bahan():
     os.system("cls")
     while True:
-        print("1.Baca Data")
-        print("2.Tambah Data")
-        print("3.Edit Data")
-        print("4.Hapus Data")
-        print("5.Kembali")
+        namafile = "tampilan/all_menu_crud.txt"
+        with open(namafile, "r") as file:
+            isi_file = file.read()
+            print(isi_file)
 
         user_input = input("Pilih Opsi: ")
 
         if user_input == "1":
-            read_data_alamat()
+            read_data_jenis_bahan()
         elif user_input == "2":
-            id_alamat = int(input("Masukkan ID Alamat: "))
-            nama_jalan = input("Masukkan Nama Jalan: ")
-            no_rumah = int(input("Masukkan Nomor Rumah: "))
-            kecamatan_id_kecamatan = int(input("Masukkan ID Kecamatan: "))
-            kelurahan_id_kelurahan = int(input("Masukkan ID Kelurahan: "))
-            insert_data_alamat(
-                id_alamat,
-                nama_jalan,
-                no_rumah,
-                kecamatan_id_kecamatan,
-                kelurahan_id_kelurahan,
-            )
+            insert_data_jenis_bahan()
         elif user_input == "3":
-            id_alamat = int(input("Masukkan ID Alamat yang akan diupdate: "))
-            nama_jalan = input("Masukkan Nama Jalan baru: ")
-            no_rumah = int(input("Masukkan Nomor Rumah baru: "))
-            kecamatan_id_kecamatan = int(input("Masukkan ID Kecamatan baru: "))
-            kelurahan_id_kelurahan = int(input("Masukkan ID Kelurahan baru: "))
-            update_data_alamat(
-                id_alamat,
-                nama_jalan,
-                no_rumah,
-                kecamatan_id_kecamatan,
-                kelurahan_id_kelurahan,
-            )
+            update_data_jenis_bahan()
         elif user_input == "4":
-            id_alamat = int(input("Masukkan ID Alamat yang akan dihapus: "))
-            delete_data_alamat(id_alamat)
+            delete_data_jenis_bahan()
         elif user_input == "5":
             fiturpokok_owner()
         else:
             print("Opsi Tidak valid")
 
 
-################################### MENU CRUD Alamat ################################################
-# def backup():
-#     print("Selamat datang di (Batik Karimata) Bataka Jember")
-#     print("Silahkan pilih menu")
-
-#     def header():
-#         print(
-#             """
-#             MENU:
-#             1. INSERT JENIS KELAMIN
-#             2. DELETE JENIS KELAMIN
-#             3. UPDATE JENIS KELAMIN
-#             4. READ JENIS KELAMIN
-#             5. INSERT ROLE
-#             6. DELETE ROLE
-#             7. UPDATE ROLE
-#             8. READ ROLE
-#             9. INSERT KECAMATAN
-#             10. DELETE KECAMATAN
-#             11. UPDATE KECAMATAN
-#             12. READ KECAMATAN
-#             13. INSERT KELURAHAN
-#             14. DELETE KELURAHAN
-#             15. UPDATE KELURAHAN
-#             16. READ KELURAHAN
-#             17. INSERT ALAMAT
-#             18. DELETE ALAMAT
-#             19. UPDATE ALAMAT
-#             20. READ ALAMAT
-#             21. INSERT AKUN
-#             22. DELETE AKUN
-#             23. UPDATE AKUN
-#             24. READ AKUN
-#             25. EXIT
-#             """
-#         )
-
-#     while True:
-#         header()
-#         user_input = input("Masukkan opsi: ")
-
-#         if user_input == "1":
-#             id_jenis_kelamin = input("Masukkan ID Jenis Kelamin: ")
-#             nama_jenis_kelamin = input("Masukkan Nama Jenis Kelamin: ")
-#             insert_data_jenis_kelamin(id_jenis_kelamin, nama_jenis_kelamin)
-#         elif user_input == "2":
-#             id_jenis_kelamin = input("Masukkan ID Jenis Kelamin yang akan dihapus: ")
-#             delete_data_jenis_kelamin(id_jenis_kelamin)
-#         elif user_input == "3":
-#             id_jenis_kelamin = input("Masukkan ID Jenis Kelamin yang akan diupdate: ")
-#             nama_jenis_kelamin = input("Masukkan Nama Jenis Kelamin baru: ")
-#             update_data_jenis_kelamin(id_jenis_kelamin, nama_jenis_kelamin)
-#         elif user_input == "4":
-#             read_data_jenis_kelamin()
-#         elif user_input == "5":
-#             id_role = input("Masukkan ID Role: ")
-#             nama_role = input("Masukkan Nama Role: ")
-#             deskripsi = input("Masukkan Deskripsi: ")
-#             insert_data_role(id_role, nama_role, deskripsi)
-#         elif user_input == "6":
-#             id_role = input("Masukkan ID Role yang akan dihapus: ")
-#             delete_data_role(id_role)
-#         elif user_input == "7":
-#             id_role = input("Masukkan ID Role yang akan diupdate: ")
-#             nama_role = input("Masukkan Nama Role baru: ")
-#             deskripsi = input("Masukkan Deskripsi baru: ")
-#             update_data_role(id_role, nama_role, deskripsi)
-#         elif user_input == "8":
-#             read_data_role()
-#         elif user_input == "9":
-#             id_kecamatan = input("Masukkan ID Kecamatan: ")
-#             nama_kecamatan = input("Masukkan Nama Kecamatan: ")
-#             insert_data_kecamatan(id_kecamatan, nama_kecamatan)
-#         elif user_input == "10":
-#             id_kecamatan = input("Masukkan ID Kecamatan yang akan dihapus: ")
-#             delete_data_kecamatan(id_kecamatan)
-#         elif user_input == "11":
-#             id_kecamatan = input("Masukkan ID Kecamatan yang akan diupdate: ")
-#             nama_kecamatan = input("Masukkan Nama Kecamatan baru: ")
-#             update_data_kecamatan(id_kecamatan, nama_kecamatan)
-#         elif user_input == "12":
-#             read_data_kecamatan()
-#         elif user_input == "13":
-#             id_kelurahan = input("Masukkan ID Kelurahan: ")
-#             nama_kelurahan = input("Masukkan Nama Kelurahan: ")
-#             insert_data_kelurahan(id_kelurahan, nama_kelurahan)
-#         elif user_input == "14":
-#             id_kelurahan = input("Masukkan ID Kelurahan yang akan dihapus: ")
-#             delete_data_kelurahan(id_kelurahan)
-#         elif user_input == "15":
-#             id_kelurahan = input("Masukkan ID Kelurahan yang akan diupdate: ")
-#             nama_kelurahan = input("Masukkan Nama Kelurahan baru: ")
-#             update_data_kelurahan(id_kelurahan, nama_kelurahan)
-#         elif user_input == "16":
-#             read_data_kelurahan()
-#         elif user_input == "17":
-#             id_alamat = int(input("Masukkan ID Alamat: "))
-#             nama_jalan = input("Masukkan Nama Jalan: ")
-#             no_rumah = int(input("Masukkan Nomor Rumah: "))
-#             kecamatan_id_kecamatan = int(input("Masukkan ID Kecamatan: "))
-#             kelurahan_id_kelurahan = int(input("Masukkan ID Kelurahan: "))
-#             insert_data_alamat(
-#                 id_alamat,
-#                 nama_jalan,
-#                 no_rumah,
-#                 kecamatan_id_kecamatan,
-#                 kelurahan_id_kelurahan,
-#             )
-#         elif user_input == "18":
-#             read_data_alamat()
-#         elif user_input == "19":
-#             id_alamat = int(input("Masukkan ID Alamat yang akan diupdate: "))
-#             nama_jalan = input("Masukkan Nama Jalan baru: ")
-#             no_rumah = int(input("Masukkan Nomor Rumah baru: "))
-#             kecamatan_id_kecamatan = int(input("Masukkan ID Kecamatan baru: "))
-#             kelurahan_id_kelurahan = int(input("Masukkan ID Kelurahan baru: "))
-#             update_data_alamat(
-#                 id_alamat,
-#                 nama_jalan,
-#                 no_rumah,
-#                 kecamatan_id_kecamatan,
-#                 kelurahan_id_kelurahan,
-#             )
-#         elif user_input == "20":
-#             id_alamat = int(input("Masukkan ID Alamat yang akan dihapus: "))
-#             delete_data_alamat(id_alamat)
-#         elif user_input == "21":
-#             id_akun = input("Masukkan ID Akun: ")
-#             username = input("Masukkan Username: ")
-#             password = input("Masukkan Password: ")
-#             role_id_role = input("Masukkan Role ID Role: ")
-#             jenis_kelamin_id_jenis_kelamin = input(
-#                 "Masukkan Jenis Kelamin ID Jenis Kelamin: "
-#             )
-#             alamat_id_alamat = input("Masukkan Alamat ID Alamat: ")
-#             nomor_telepon = input("Masukkan Nomor Telepon: ")
-#             tanggal_masuk = input("Masukkan Tanggal Masuk: ")
-#             insert_data_akun(
-#                 id_akun,
-#                 username,
-#                 password,
-#                 role_id_role,
-#                 jenis_kelamin_id_jenis_kelamin,
-#                 alamat_id_alamat,
-#                 nomor_telepon,
-#                 tanggal_masuk,
-#             )
-#         elif user_input == "22":
-#             id_akun = input("Masukkan ID Akun yang akan dihapus: ")
-#             delete_data_akun(id_akun)
-#         elif user_input == "23":
-#             id_akun = input("Masukkan ID Akun yang akan diupdate: ")
-#             username = input("Masukkan Username baru: ")
-#             password = input("Masukkan Password baru: ")
-#             role_id_role = input("Masukkan Role ID Role baru: ")
-#             jenis_kelamin_id_jenis_kelamin = input(
-#                 "Masukkan Jenis Kelamin ID Jenis Kelamin baru: "
-#             )
-#             alamat_id_alamat = input("Masukkan Alamat ID Alamat baru: ")
-#             nomor_telepon = input("Masukkan Nomor Telepon baru: ")
-#             tanggal_masuk = input("Masukkan Tanggal Masuk baru: ")
-#             update_data_akun(
-#                 id_akun,
-#                 username,
-#                 password,
-#                 role_id_role,
-#                 jenis_kelamin_id_jenis_kelamin,
-#                 alamat_id_alamat,
-#                 nomor_telepon,
-#                 tanggal_masuk,
-#             )
-#         elif user_input == "24":
-#             read_data_akun()
-#         elif user_input == "25":
-#             username = input("Masukkan username: ")
-#             password = input("Masukkan password: ")
-
-#             login(username, password)
-#         else:
-#             print("Opsi tidak valid. Silahkan coba lagi.")
+################################### MENU CRUD Jenis Bahan ################################################
 
 
+################################### MENU CRUD Ketersediaan Bahan Owner ################################################
+def menu_crud_ketersediaan_bahan_owner():
+    os.system("cls")
+    while True:
+        namafile = "tampilan/all_menu_crud.txt"
+        with open(namafile, "r") as file:
+            isi_file = file.read()
+            print(isi_file)
+
+        user_input = input("Pilih Opsi: ")
+
+        if user_input == "1":
+            read_data_ketersediaan_bahan()
+        elif user_input == "2":
+            insert_data_ketersediaan_bahan()
+        elif user_input == "3":
+            update_data_ketersediaan_bahan()
+        elif user_input == "4":
+            delete_data_ketersediaan_bahan()
+        elif user_input == "5":
+            allfitur_Owner()
+        else:
+            print("Opsi Tidak valid")
+
+
+################################### MENU CRUD Ketersediaan Bahan owner################################################
+
+
+################################### MENU CRUD Ketersediaan Bahan staff ################################################
+def menu_crud_ketersediaan_bahan_staff():
+    os.system("cls")
+    while True:
+        namafile = "tampilan/all_menu_crud.txt"
+        with open(namafile, "r") as file:
+            isi_file = file.read()
+            print(isi_file)
+
+        user_input = input("Pilih Opsi: ")
+
+        if user_input == "1":
+            read_data_ketersediaan_bahan()
+        elif user_input == "2":
+            insert_data_ketersediaan_bahan()
+        elif user_input == "3":
+            update_data_ketersediaan_bahan()
+        elif user_input == "4":
+            delete_data_ketersediaan_bahan()
+        elif user_input == "5":
+            allfitur_Staff()
+        else:
+            print("Opsi Tidak valid")
+
+
+################################### MENU CRUD Ketersediaan Bahan staff ################################################
+
+
+################################### MENU CRUD Bahan Masuk Owner ################################################
+def menu_crud_bahan_masuk_owner():
+    os.system("cls")
+    while True:
+        namafile = "tampilan/spesial_crud_bahan_masuk.txt"
+        with open(namafile, "r") as file:
+            isi_file = file.read()
+            print(isi_file)
+
+        user_input = input("Pilih Opsi: ")
+
+        if user_input == "1":
+            read_data_bahan_masuk()
+        elif user_input == "2":
+            add_bahan_masuk_and_detail()
+        elif user_input == "3":
+            update_data_bahan_masuk()
+        elif user_input == "4":
+            menu_crud_detail_bahan_masuk_owner()
+        elif user_input == "5":
+            allfitur_Owner()
+        else:
+            print("Opsi Tidak valid")
+
+
+################################### MENU CRUD Bahan Masuk owner################################################
+
+
+################################### MENU CRUD Bahan Masuk staff ################################################
+def menu_crud_bahan_masuk_staff():
+    os.system("cls")
+    while True:
+        namafile = "tampilan/spesial_crud_bahan_masuk.txt"
+        with open(namafile, "r") as file:
+            isi_file = file.read()
+            print(isi_file)
+
+        user_input = input("Pilih Opsi: ")
+
+        if user_input == "1":
+            read_data_bahan_masuk()
+        elif user_input == "2":
+            add_bahan_masuk_and_detail()
+        elif user_input == "3":
+            update_data_bahan_masuk()
+        elif user_input == "4":
+            menu_crud_detail_bahan_masuk_owner()
+        elif user_input == "5":
+            allfitur_Staff()
+        else:
+            print("Opsi Tidak valid")
+
+
+################################### MENU CRUD Bahan Masuk staff ################################################
+
+
+################################### MENU CRUD Bahan Keluar Owner ################################################
+def menu_crud_bahan_keluar_owner():
+    os.system("cls")
+    while True:
+        namafile = "tampilan/spesial_crud_bahan_keluar.txt"
+        with open(namafile, "r") as file:
+            isi_file = file.read()
+            print(isi_file)
+
+        user_input = input("Pilih Opsi: ")
+
+        if user_input == "1":
+            read_data_bahan_keluar()
+        elif user_input == "2":
+            add_bahan_keluar_and_detail()
+        elif user_input == "3":
+            update_data_bahan_keluar()
+        elif user_input == "4":
+            menu_crud_detail_bahan_keluar_owner()
+        elif user_input == "5":
+            allfitur_Owner()
+        else:
+            print("Opsi Tidak valid")
+
+
+################################### MENU CRUD Bahan Keluar staff ################################################
+
+
+def menu_crud_bahan_keluar_staff():
+    os.system("cls")
+    while True:
+        namafile = "tampilan/spesial_crud_bahan_keluar.txt"
+        with open(namafile, "r") as file:
+            isi_file = file.read()
+            print(isi_file)
+
+        user_input = input("Pilih Opsi: ")
+
+        if user_input == "1":
+            read_data_bahan_keluar()
+        elif user_input == "2":
+            add_bahan_keluar_and_detail()
+        elif user_input == "3":
+            update_data_bahan_keluar()
+        elif user_input == "4":
+            menu_crud_detail_bahan_keluar_staff()
+        elif user_input == "5":
+            allfitur_Staff()
+        else:
+            print("Opsi Tidak valid")
+
+
+################################### MENU CRUD Bahan Keluar staff ################################################
+
+
+################################### MENU CRUD Detail bahan masuk owner ################################################
+def menu_crud_detail_bahan_masuk_owner():
+    os.system("cls")
+    while True:
+        namafile = "tampilan/detail_bahan_masuk.txt"
+        with open(namafile, "r") as file:
+            isi_file = file.read()
+            print(isi_file)
+
+        user_input = input("Pilih Opsi: ")
+
+        if user_input == "1":
+            read_data_detail_bahan_masuk()
+        elif user_input == "2":
+            menu_crud_bahan_masuk_owner()
+        else:
+            print("Opsi Tidak valid")
+
+
+################################### MENU CRUD Detail bahan masuk owner ################################################
+
+
+################################### MENU CRUD Detail bahan masuk staff ################################################
+def menu_crud_detail_bahan_masuk_staff():
+    os.system("cls")
+    while True:
+        namafile = "tampilan/detail_bahan_masuk.txt"
+        with open(namafile, "r") as file:
+            isi_file = file.read()
+            print(isi_file)
+
+        user_input = input("Pilih Opsi: ")
+
+        if user_input == "1":
+            read_data_detail_bahan_masuk()
+        elif user_input == "2":
+            menu_crud_bahan_masuk_staff()
+        else:
+            print("Opsi Tidak valid")
+
+
+################################### MENU CRUD Detail bahan masuk staff ################################################
+
+
+################################### MENU CRUD Detail bahan keluar owner ################################################
+def menu_crud_detail_bahan_keluar_owner():
+    os.system("cls")
+    while True:
+        namafile = "tampilan/detail_bahan_keluar.txt"
+        with open(namafile, "r") as file:
+            isi_file = file.read()
+            print(isi_file)
+
+        user_input = input("Pilih Opsi: ")
+
+        if user_input == "1":
+            read_data_detail_bahan_keluar()
+        elif user_input == "2":
+            menu_crud_bahan_keluar_owner()
+        else:
+            print("Opsi Tidak valid")
+
+
+################################### MENU CRUD Detail bahan keluar owner ################################################
+
+
+################################### MENU CRUD Detail bahan keluar staff ################################################
+def menu_crud_detail_bahan_keluar_staff():
+    os.system("cls")
+    while True:
+        namafile = "tampilan/detail_bahan_keluar.txt"
+        with open(namafile, "r") as file:
+            isi_file = file.read()
+            print(isi_file)
+
+        user_input = input("Pilih Opsi: ")
+
+        if user_input == "1":
+            read_data_detail_bahan_keluar()
+        elif user_input == "2":
+            menu_crud_bahan_keluar_staff()
+        else:
+            print("Opsi Tidak valid")
+
+
+################################### MENU CRUD Detail bahan keluar staff ################################################
 if __name__ == "__main__":
     main()
