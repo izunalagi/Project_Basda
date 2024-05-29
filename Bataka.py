@@ -35,6 +35,7 @@ def connect():
 
 
 def read_data_jenis_kelamin():
+    os.system("cls")
     try:
         conn = None
         params = config()
@@ -52,6 +53,7 @@ def read_data_jenis_kelamin():
 
 
 def insert_data_jenis_kelamin():
+    os.system("cls")
     try:
         conn = None
         params = config()
@@ -83,6 +85,7 @@ def insert_data_jenis_kelamin():
 
 
 def delete_data_jenis_kelamin():
+    os.system("cls")
     try:
         conn = None
         params = config()
@@ -106,6 +109,7 @@ def delete_data_jenis_kelamin():
 
 
 def update_data_jenis_kelamin():
+    os.system("cls")
     try:
         conn = None
         params = config()
@@ -140,6 +144,7 @@ def update_data_jenis_kelamin():
 
 ################################### ROLE ################################################
 def insert_data_role():
+    os.system("cls")
     try:
         conn = None
         params = config()
@@ -173,6 +178,7 @@ def insert_data_role():
 
 
 def delete_data_role():
+    os.system("cls")
     try:
         conn = None
         params = config()
@@ -196,6 +202,7 @@ def delete_data_role():
 
 
 def update_data_role():
+    os.system("cls")
     try:
         conn = None
         params = config()
@@ -226,6 +233,7 @@ def update_data_role():
 
 
 def read_data_role():
+    os.system("cls")
     try:
         conn = None
         params = config()
@@ -247,6 +255,7 @@ def read_data_role():
 
 ################################### KECAMATAN ################################################
 def read_data_kecamatan():
+    os.system("cls")
     try:
         conn = None
         params = config()
@@ -264,6 +273,7 @@ def read_data_kecamatan():
 
 
 def insert_data_kecamatan():
+    os.system("cls")
     try:
         conn = None
         params = config()
@@ -295,11 +305,13 @@ def insert_data_kecamatan():
 
 
 def delete_data_kecamatan():
+    os.system("cls")
     try:
         conn = None
         params = config()
         conn = psycopg2.connect(**params)
 
+        read_data_kecamatan()
         id_kecamatan = input("Masukkan ID Kecamatan yang ingin dihapus: ")
 
         sql = "DELETE FROM kecamatan WHERE id_kecamatan = %s"
@@ -317,11 +329,13 @@ def delete_data_kecamatan():
 
 
 def update_data_kecamatan():
+    os.system("cls")
     try:
         conn = None
         params = config()
         conn = psycopg2.connect(**params)
 
+        read_data_kecamatan()
         id_kecamatan = input("Masukkan ID Kecamatan yang ingin diupdate: ")
         nama_kecamatan = input("Masukkan Nama Kecamatan baru: ")
 
@@ -348,6 +362,7 @@ def update_data_kecamatan():
 
 ################################### AKUN ################################################
 def read_data_akun():
+    os.system("cls")
     try:
         conn = None
         params = config()
@@ -364,6 +379,7 @@ def read_data_akun():
 
 
 def insert_data_akun():
+    os.system("cls")
     try:
         conn = None
         params = config()
@@ -377,12 +393,15 @@ def insert_data_akun():
 
         username = input("Enter Username: ")
         password = input("Enter Password: ")
+        read_data_role()
         role_id_role = int(input("Enter Role_id_Role: "))
+        read_data_jenis_kelamin()
         jenis_kelamin_id_jenis_kelamin = int(
             input("Enter Jenis_Kelamin_id_jenis_kelamin: ")
         )
         nama_jalan = input("Enter Nama_Jalan: ")
         no_rumah = int(input("Enter No_Rumah: "))
+        read_data_kecamatan()
         kecamatan_id_kecamatan = int(input("Enter Kecamatan_id_kecamatan: "))
         nomor_telepon = input("Enter Nomor_Telepon: ")
 
@@ -416,11 +435,13 @@ def insert_data_akun():
 
 
 def delete_data_akun():
+    os.system("cls")
     try:
         conn = None
         params = config()
         conn = psycopg2.connect(**params)
 
+        read_data_akun()
         id_akun = input("Enter ID Akun to delete: ")
 
         sql = "DELETE FROM Akun WHERE id_Akun = %s"
@@ -438,20 +459,25 @@ def delete_data_akun():
 
 
 def update_data_akun():
+    os.system("cls")
     try:
         conn = None
         params = config()
         conn = psycopg2.connect(**params)
 
+        read_data_akun()
         id_akun = input("Enter ID Akun to update: ")
         username = input("Enter new Username: ")
         password = input("Enter new Password: ")
+        read_data_role()
         role_id_role = int(input("Enter new Role_id_Role: "))
+        read_data_jenis_kelamin()
         jenis_kelamin_id_jenis_kelamin = int(
             input("Enter new Jenis_Kelamin_id_jenis_kelamin: ")
         )
         nama_jalan = input("Enter new Nama_Jalan: ")
         no_rumah = int(input("Enter new No_Rumah: "))
+        read_data_kecamatan()
         kecamatan_id_kecamatan = int(input("Enter new Kecamatan_id_kecamatan: "))
         nomor_telepon = input("Enter new Nomor_Telepon: ")
 
@@ -491,6 +517,7 @@ def update_data_akun():
 
 ################################### MERK ################################################
 def read_data_merk():
+    os.system("cls")
     try:
         conn = None
         params = config()
@@ -508,6 +535,7 @@ def read_data_merk():
 
 
 def insert_data_merk():
+    os.system("cls")
     try:
         conn = None
         params = config()
@@ -539,11 +567,13 @@ def insert_data_merk():
 
 
 def delete_data_merk():
+    os.system("cls")
     try:
         conn = None
         params = config()
         conn = psycopg2.connect(**params)
 
+        read_data_merk()
         id_merk = input("Masukkan ID Merk yang ingin dihapus: ")
 
         sql = "DELETE FROM Merk WHERE Id_Merk = %s"
@@ -561,11 +591,13 @@ def delete_data_merk():
 
 
 def update_data_merk():
+    os.system("cls")
     try:
         conn = None
         params = config()
         conn = psycopg2.connect(**params)
 
+        read_data_merk()
         id_merk = input("Masukkan ID Merk yang ingin diupdate: ")
         nama_merk = input("Masukkan Nama Merk baru: ")
 
@@ -592,6 +624,7 @@ def update_data_merk():
 
 ################################### Supplier ################################################
 def read_data_supplier():
+    os.system("cls")
     try:
         conn = None
         params = config()
@@ -609,6 +642,7 @@ def read_data_supplier():
 
 
 def insert_data_supplier():
+    os.system("cls")
     try:
         conn = None
         params = config()
@@ -640,11 +674,13 @@ def insert_data_supplier():
 
 
 def delete_data_supplier():
+    os.system("cls")
     try:
         conn = None
         params = config()
         conn = psycopg2.connect(**params)
 
+        read_data_supplier()
         id_supplier = input("Masukkan ID Supplier yang ingin dihapus: ")
 
         sql = "DELETE FROM Supplier WHERE id_supplier = %s"
@@ -662,11 +698,13 @@ def delete_data_supplier():
 
 
 def update_data_supplier():
+    os.system("cls")
     try:
         conn = None
         params = config()
         conn = psycopg2.connect(**params)
 
+        read_data_supplier()
         id_supplier = input("Masukkan ID Supplier yang ingin diupdate: ")
         nama_supplier = input("Masukkan Nama Supplier baru: ")
 
@@ -693,6 +731,7 @@ def update_data_supplier():
 
 ################################### Jenis Bahan ################################################
 def insert_data_jenis_bahan():
+    os.system("cls")
     try:
         conn = None
         params = config()
@@ -724,6 +763,7 @@ def insert_data_jenis_bahan():
 
 
 def read_data_jenis_bahan():
+    os.system("cls")
     try:
         conn = None
         params = config()
@@ -741,11 +781,13 @@ def read_data_jenis_bahan():
 
 
 def update_data_jenis_bahan():
+    os.system("cls")
     try:
         conn = None
         params = config()
         conn = psycopg2.connect(**params)
 
+        read_data_jenis_bahan()
         id_jenis_bahan = int(input("Masukkan ID Jenis Bahan yang ingin diupdate: "))
         nama_jenis = input("Masukkan Nama Jenis Bahan baru: ")
 
@@ -768,11 +810,13 @@ def update_data_jenis_bahan():
 
 
 def delete_data_jenis_bahan():
+    os.system("cls")
     try:
         conn = None
         params = config()
         conn = psycopg2.connect(**params)
 
+        read_data_jenis_bahan()
         id_jenis_bahan = int(input("Masukkan ID Jenis Bahan yang ingin dihapus: "))
 
         sql = "DELETE FROM Jenis_Bahan WHERE id_jenis_bahan = %s"
@@ -794,6 +838,7 @@ def delete_data_jenis_bahan():
 
 ################################### Ketersediaan Bahan ################################################
 def read_data_ketersediaan_bahan():
+    os.system("cls")
     try:
         conn = None
         params = config()
@@ -811,6 +856,7 @@ def read_data_ketersediaan_bahan():
 
 
 def insert_data_ketersediaan_bahan():
+    os.system("cls")
     try:
         conn = None
         params = config()
@@ -819,7 +865,9 @@ def insert_data_ketersediaan_bahan():
         nama_bahan = input("Masukkan Nama Bahan: ")
         stock = int(input("Masukkan Stock: "))
         deskripsi = input("Masukkan Deskripsi: ")
+        read_data_jenis_bahan()
         jenis_bahan_id_jenis_bahan = int(input("Masukkan ID Jenis Bahan: "))
+        read_data_merk()
         merk_id_merk = int(input("Masukkan ID Merk: "))
 
         # Mendapatkan nilai id_ketersediaan_bahan maksimum saat ini
@@ -860,11 +908,13 @@ def insert_data_ketersediaan_bahan():
 
 
 def delete_data_ketersediaan_bahan():
+    os.system("cls")
     try:
         conn = None
         params = config()
         conn = psycopg2.connect(**params)
 
+        read_data_ketersediaan_bahan()
         id_ketersediaan_bahan = int(
             input("Masukkan ID Ketersediaan Bahan yang ingin dihapus: ")
         )
@@ -884,18 +934,22 @@ def delete_data_ketersediaan_bahan():
 
 
 def update_data_ketersediaan_bahan():
+    os.system("cls")
     try:
         conn = None
         params = config()
         conn = psycopg2.connect(**params)
 
+        read_data_ketersediaan_bahan()
         id_ketersediaan_bahan = int(
             input("Masukkan ID Ketersediaan Bahan yang ingin diupdate: ")
         )
         nama_bahan = input("Masukkan Nama Bahan baru: ")
         stock = int(input("Masukkan Stock baru: "))
         deskripsi = input("Masukkan Deskripsi baru: ")
+        read_data_jenis_bahan()
         jenis_bahan_id_jenis_bahan = int(input("Masukkan ID Jenis Bahan baru: "))
+        read_data_merk()
         merk_id_merk = int(input("Masukkan ID Merk baru: "))
 
         sql = """
@@ -935,6 +989,7 @@ def update_data_ketersediaan_bahan():
 
 ################################### BAHAN MASUK ################################################
 def read_data_bahan_masuk():
+    os.system("cls")
     try:
         conn = None
         params = config()
@@ -951,6 +1006,7 @@ def read_data_bahan_masuk():
 
 
 def insert_data_bahan_masuk(akun_id_akun):
+    os.system("cls")
     try:
         conn = None
         params = config()
@@ -979,6 +1035,7 @@ def insert_data_bahan_masuk(akun_id_akun):
 
 
 def delete_data_bahan_masuk(id_bahan_masuk):
+    os.system("cls")
     try:
         conn = None
         params = config()
@@ -998,11 +1055,13 @@ def delete_data_bahan_masuk(id_bahan_masuk):
 
 
 def update_data_bahan_masuk(id_bahan_masuk, akun_id_akun):
+    os.system("cls")
     try:
         conn = None
         params = config()
         conn = psycopg2.connect(**params)
 
+        read_data_bahan_masuk()
         id_bahan_masuk = input("Masukkan ID Bahan Masuk yang ingin diperbarui: ")
         akun_id_akun = input("Masukkan ID Akun Baru: ")
 
@@ -1025,6 +1084,9 @@ def update_data_bahan_masuk(id_bahan_masuk, akun_id_akun):
 
 
 def add_bahan_masuk_and_detail():
+    os.system("cls")
+
+    read_data_akun()
     akun_id_akun = int(input("Enter akun_id_akun: "))
 
     # Membuat data bahan masuk baru dan mendapatkan id_bahan_masuk yang dihasilkan
@@ -1032,6 +1094,7 @@ def add_bahan_masuk_and_detail():
 
     if id_bahan_masuk_baru is not None:
         while True:
+            read_data_supplier()
             id_supplier = int(input("Enter id_supplier: "))
             read_data_ketersediaan_bahan()
             id_ketersediaan_bahan = int(input("Enter id_ketersediaan_bahan: "))
@@ -1062,6 +1125,7 @@ def add_bahan_masuk_and_detail():
 
 
 def read_data_detail_bahan_masuk():
+    os.system("cls")
     try:
         conn = None
         params = config()
@@ -1080,6 +1144,7 @@ def read_data_detail_bahan_masuk():
 def insert_data_detail_bahan_masuk(
     id_bahan_masuk, id_supplier, id_ketersediaan_bahan, quantity, deskripsi
 ):
+    os.system("cls")
     try:
         conn = None
         params = config()
@@ -1106,6 +1171,7 @@ def insert_data_detail_bahan_masuk(
 
 
 def delete_data_detail_bahan_masuk(id_detail_bahan_masuk):
+    os.system("cls")
     try:
         conn = None
         params = config()
@@ -1132,6 +1198,7 @@ def update_data_detail_bahan_masuk(
     quantity,
     deskripsi,
 ):
+    os.system("cls")
     try:
         conn = None
         params = config()
@@ -1173,6 +1240,7 @@ def update_data_detail_bahan_masuk(
 
 ################################### BAHAN Keluar ################################################
 def read_data_bahan_keluar():
+    os.system("cls")
     try:
         conn = None
         params = config()
@@ -1189,6 +1257,7 @@ def read_data_bahan_keluar():
 
 
 def insert_data_bahan_keluar(akun_id_akun):
+    os.system("cls")
     try:
         conn = None
         params = config()
@@ -1217,6 +1286,7 @@ def insert_data_bahan_keluar(akun_id_akun):
 
 
 def delete_data_bahan_keluar(id_bahan_keluar):
+    os.system("cls")
     try:
         conn = None
         params = config()
@@ -1236,12 +1306,15 @@ def delete_data_bahan_keluar(id_bahan_keluar):
 
 
 def update_data_bahan_keluar():
+    os.system("cls")
     try:
         conn = None
         params = config()
         conn = psycopg2.connect(**params)
 
+        read_data_bahan_keluar()
         id_bahan_keluar = input("Masukkan ID Bahan Keluar yang ingin diperbarui: ")
+        read_data_akun()
         akun_id_akun = input("Masukkan ID Akun Baru: ")
 
         sql = """
@@ -1263,6 +1336,7 @@ def update_data_bahan_keluar():
 
 
 def add_bahan_keluar_and_detail():
+    os.system("cls")
     akun_id_akun = int(input("Enter akun_id_akun: "))
 
     # Membuat data bahan keluar baru dan mendapatkan id_bahan_keluar yang dihasilkan
@@ -1295,6 +1369,7 @@ def add_bahan_keluar_and_detail():
 
 ################################### Detail BAHAN KElUAR ################################################
 def read_data_detail_bahan_keluar():
+    os.system("cls")
     try:
         conn = None
         params = config()
@@ -1313,6 +1388,7 @@ def read_data_detail_bahan_keluar():
 def insert_data_detail_bahan_keluar(
     id_bahan_keluar, id_ketersediaan_bahan, quantity, deskripsi
 ):
+    os.system("cls")
     try:
         conn = None
         params = config()
@@ -1339,6 +1415,7 @@ def insert_data_detail_bahan_keluar(
 
 
 def delete_data_detail_bahan_keluar(id_detail_bahan_keluar):
+    os.system("cls")
     try:
         conn = None
         params = config()
@@ -1364,6 +1441,7 @@ def update_data_detail_bahan_keluar(
     quantity,
     deskripsi,
 ):
+    os.system("cls")
     try:
         conn = None
         params = config()
@@ -1399,6 +1477,8 @@ def update_data_detail_bahan_keluar(
 
 
 ################################### Detail BAHAN KELUAR ################################################
+
+
 ################################### LOGIN ################################################
 def login(username, password):
     os.system("cls")
@@ -1484,6 +1564,10 @@ def allfitur_Owner():
         elif user_input == "5":
             daftar_Tambah_Data()
         elif user_input == "6":
+            namatampilan = "tampilan/logout.txt"
+            with open(namatampilan, "r") as file:
+                core_file = file.read()
+                print(core_file)
             sys.exit()
         else:
             print("Pilihan invalid")
@@ -1511,6 +1595,10 @@ def allfitur_Staff():
         elif user_input == "4":
             fiturpokok_staff()
         elif user_input == "5":
+            namatampilan = "tampilan/logout.txt"
+            with open(namatampilan, "r", encoding="utf-8") as file:
+                core_file = file.read()
+                print(core_file)
             sys.exit()
         else:
             print("Pilihan invalid")
@@ -1564,16 +1652,12 @@ def fiturpokok_owner():
         elif user_input == "3":
             menu_crud_kecamatan()
         elif user_input == "4":
-            print("dihapus")
-        elif user_input == "5":
-            print("dihapus")
-        elif user_input == "6":
             menu_crud_merk()
-        elif user_input == "7":
+        elif user_input == "5":
             menu_crud_supplier()
-        elif user_input == "8":
+        elif user_input == "6":
             menu_crud_jenis_bahan()
-        elif user_input == "9":
+        elif user_input == "7":
             allfitur_Owner()
         else:
             print("Opsi Tidak valid")

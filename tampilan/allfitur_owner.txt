@@ -1,10 +1,11 @@
-+---------------------------------+
-|         HALO OWNER!!!           |
-+---------------------------------+
-|1. Bahan Masuk                   |
-|2. Bahan Keluar                  |
-|3. Ketersediaan Bahan            |
-|4. Fitur Pokok                   |
-|5. Tambah Data Akun              |
-|6. Keluar Aplikasi               |                                
-+---------------------------------+
+===================\                HALO OWNER!!               /==========================
+|                    [========================================]                         |
+|                             [ 1 ] Bahan Masuk                                         |
+|                             [ 2 ] Bahan Keluar                                        |
+|                             [ 3 ] Ketersediaan Bahan                                  |       
+|                             [ 4 ] Fitur Pokok                                         |
+|                             [ 5 ] Tambah Data Akun                                    |
+|			      [ 6 ] Keluar Aplikasi 					|
+|                                                                                       |
+=========================================================================================
+                                                                  s
