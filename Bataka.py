@@ -43,6 +43,7 @@ def read_data_jenis_kelamin():
 
         sql = "SELECT * FROM jenis_kelamin ORDER BY id_jenis_kelamin ASC"
         df = pd.read_sql_query(sql, conn)
+        os.system("cls")
         print(tabulate(df, headers="keys", tablefmt="grid"))
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
@@ -61,13 +62,11 @@ def insert_data_jenis_kelamin():
 
         nama_jenis_kelamin = input("Masukkan Nama Jenis Kelamin: ")
 
-        # Mendapatkan nilai id_jenis_kelamin maksimum saat ini
         cur = conn.cursor()
         cur.execute("SELECT COALESCE(MAX(id_jenis_kelamin), 0) FROM jenis_kelamin")
         max_id = cur.fetchone()[0]
         new_id = max_id + 1
 
-        # Insert data dengan id_jenis_kelamin baru
         sql = """
         INSERT INTO jenis_kelamin (id_jenis_kelamin, nama_jenis_kelamin)
         VALUES (%s, %s)
@@ -150,17 +149,14 @@ def insert_data_role():
         params = config()
         conn = psycopg2.connect(**params)
 
-        # Meminta input data dari pengguna
         nama_role = input("Masukkan Nama Role: ")
         deskripsi = input("Masukkan Deskripsi Role: ")
 
-        # Mendapatkan nilai id_role maksimum saat ini
         cur = conn.cursor()
         cur.execute("SELECT COALESCE(MAX(id_role), 0) FROM role")
         max_id = cur.fetchone()[0]
         new_id = max_id + 1
 
-        # Insert data dengan id_role baru
         sql = """
         INSERT INTO role (id_role, nama_role, deskripsi)
         VALUES (%s, %s, %s)
@@ -241,6 +237,7 @@ def read_data_role():
 
         sql = "SELECT * FROM role ORDER BY id_role ASC"
         df = pd.read_sql_query(sql, conn)
+        os.system("cls")
         print(tabulate(df, headers="keys", tablefmt="grid"))
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
@@ -263,6 +260,7 @@ def read_data_kecamatan():
 
         sql = "SELECT * FROM kecamatan ORDER BY id_kecamatan ASC"
         df = pd.read_sql_query(sql, conn)
+        os.system("cls")
         print(tabulate(df, headers="keys", tablefmt="grid"))
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
@@ -281,13 +279,11 @@ def insert_data_kecamatan():
 
         nama_kecamatan = input("Masukkan Nama Kecamatan: ")
 
-        # Mendapatkan nilai id_kecamatan maksimum saat ini
         cur = conn.cursor()
         cur.execute("SELECT COALESCE(MAX(id_kecamatan), 0) FROM kecamatan")
         max_id = cur.fetchone()[0]
         new_id = max_id + 1
 
-        # Insert data dengan id_kecamatan baru
         sql = """
         INSERT INTO kecamatan (id_kecamatan, nama_kecamatan)
         VALUES (%s, %s)
@@ -369,6 +365,7 @@ def read_data_akun():
         conn = psycopg2.connect(**params)
         sql = "SELECT * FROM Akun ORDER BY id_Akun ASC"
         df = pd.read_sql_query(sql, conn)
+        os.system("cls")
         print(tabulate(df, headers="keys", tablefmt="grid"))
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
@@ -385,7 +382,6 @@ def insert_data_akun():
         params = config()
         conn = psycopg2.connect(**params)
 
-        # Mendapatkan nilai id_Akun maksimum saat ini
         cur = conn.cursor()
         cur.execute("SELECT COALESCE(MAX(id_Akun), 0) FROM Akun")
         max_id = cur.fetchone()[0]
@@ -525,6 +521,7 @@ def read_data_merk():
 
         sql = "SELECT * FROM Merk ORDER BY Id_Merk ASC"
         df = pd.read_sql_query(sql, conn)
+        os.system("cls")
         print(tabulate(df, headers="keys", tablefmt="grid"))
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
@@ -543,13 +540,11 @@ def insert_data_merk():
 
         nama_merk = input("Masukkan Nama Merk: ")
 
-        # Mendapatkan nilai Id_Merk maksimum saat ini
         cur = conn.cursor()
         cur.execute("SELECT COALESCE(MAX(Id_Merk), 0) FROM Merk")
         max_id = cur.fetchone()[0]
         new_id = max_id + 1
 
-        # Insert data dengan Id_Merk baru
         sql = """
         INSERT INTO Merk (Id_Merk, Nama_Merk)
         VALUES (%s, %s)
@@ -632,6 +627,7 @@ def read_data_supplier():
 
         sql = "SELECT * FROM Supplier ORDER BY id_supplier ASC"
         df = pd.read_sql_query(sql, conn)
+        os.system("cls")
         print(tabulate(df, headers="keys", tablefmt="grid"))
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
@@ -650,13 +646,11 @@ def insert_data_supplier():
 
         nama_supplier = input("Masukkan Nama Supplier: ")
 
-        # Mendapatkan nilai id_supplier maksimum saat ini
         cur = conn.cursor()
         cur.execute("SELECT COALESCE(MAX(id_supplier), 0) FROM Supplier")
         max_id = cur.fetchone()[0]
         new_id = max_id + 1
 
-        # Insert data dengan id_supplier baru
         sql = """
         INSERT INTO Supplier (id_supplier, nama_supplier)
         VALUES (%s, %s)
@@ -739,13 +733,11 @@ def insert_data_jenis_bahan():
 
         nama_jenis = input("Masukkan Nama Jenis Bahan: ")
 
-        # Mendapatkan nilai id_jenis_bahan maksimum saat ini
         cur = conn.cursor()
         cur.execute("SELECT COALESCE(MAX(id_jenis_bahan), 0) FROM Jenis_Bahan")
         max_id = cur.fetchone()[0]
         new_id = max_id + 1
 
-        # Insert data dengan id_jenis_bahan baru
         sql = """
         INSERT INTO Jenis_Bahan (id_jenis_bahan, nama_jenis)
         VALUES (%s, %s)
@@ -771,6 +763,7 @@ def read_data_jenis_bahan():
 
         sql = "SELECT * FROM Jenis_Bahan ORDER BY id_jenis_bahan"
         df = pd.read_sql_query(sql, conn)
+        os.system("cls")
         print(tabulate(df, headers="keys", tablefmt="grid"))
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
@@ -846,6 +839,7 @@ def read_data_ketersediaan_bahan():
 
         sql = "SELECT * FROM Ketersediaan_Bahan ORDER BY id_ketersediaan_bahan ASC"
         df = pd.read_sql_query(sql, conn)
+        os.system("cls")
         print(tabulate(df, headers="keys", tablefmt="grid"))
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
@@ -870,7 +864,6 @@ def insert_data_ketersediaan_bahan():
         read_data_merk()
         merk_id_merk = int(input("Masukkan ID Merk: "))
 
-        # Mendapatkan nilai id_ketersediaan_bahan maksimum saat ini
         cur = conn.cursor()
         cur.execute(
             "SELECT COALESCE(MAX(id_ketersediaan_bahan), 0) FROM Ketersediaan_Bahan"
@@ -878,7 +871,6 @@ def insert_data_ketersediaan_bahan():
         max_id = cur.fetchone()[0]
         new_id = max_id + 1
 
-        # Insert data dengan id_ketersediaan_bahan baru
         sql = """
         INSERT INTO Ketersediaan_Bahan (id_ketersediaan_bahan, nama_bahan, stock, deskripsi, jenis_bahan_id_jenis_bahan, merk_id_merk)
         VALUES (%s, %s, %s, %s, %s, %s)
@@ -996,6 +988,7 @@ def read_data_bahan_masuk():
         conn = psycopg2.connect(**params)
         sql = "SELECT * FROM Bahan_Masuk ORDER BY id_bahan_masuk ASC"
         df = pd.read_sql_query(sql, conn)
+        os.system("cls")
         print(tabulate(df, headers="keys", tablefmt="grid"))
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
@@ -1089,7 +1082,6 @@ def add_bahan_masuk_and_detail():
     read_data_akun()
     akun_id_akun = int(input("Enter akun_id_akun: "))
 
-    # Membuat data bahan masuk baru dan mendapatkan id_bahan_masuk yang dihasilkan
     id_bahan_masuk_baru = insert_data_bahan_masuk(akun_id_akun)
 
     if id_bahan_masuk_baru is not None:
@@ -1132,6 +1124,7 @@ def read_data_detail_bahan_masuk():
         conn = psycopg2.connect(**params)
         sql = "SELECT * FROM detail_bahan_masuk ORDER BY id_detail_bahan_masuk ASC"
         df = pd.read_sql_query(sql, conn)
+        os.system("cls")
         print(tabulate(df, headers="keys", tablefmt="grid"))
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
@@ -1247,6 +1240,7 @@ def read_data_bahan_keluar():
         conn = psycopg2.connect(**params)
         sql = "SELECT * FROM Bahan_Keluar ORDER BY id_bahan_keluar ASC"
         df = pd.read_sql_query(sql, conn)
+        os.system("cls")
         print(tabulate(df, headers="keys", tablefmt="grid"))
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
@@ -1339,7 +1333,6 @@ def add_bahan_keluar_and_detail():
     os.system("cls")
     akun_id_akun = int(input("Enter akun_id_akun: "))
 
-    # Membuat data bahan keluar baru dan mendapatkan id_bahan_keluar yang dihasilkan
     id_bahan_keluar_baru = insert_data_bahan_keluar(akun_id_akun)
 
     if id_bahan_keluar_baru is not None:
@@ -1369,13 +1362,13 @@ def add_bahan_keluar_and_detail():
 
 ################################### Detail BAHAN KElUAR ################################################
 def read_data_detail_bahan_keluar():
-    os.system("cls")
     try:
         conn = None
         params = config()
         conn = psycopg2.connect(**params)
         sql = "SELECT * FROM detail_bahan_keluar ORDER BY id_detail_bahan_keluar ASC"
         df = pd.read_sql_query(sql, conn)
+        os.system("cls")
         print(tabulate(df, headers="keys", tablefmt="grid"))
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
@@ -1569,6 +1562,8 @@ def allfitur_Owner():
                 core_file = file.read()
                 print(core_file)
             sys.exit()
+        elif user_input == "7":
+            main()
         else:
             print("Pilihan invalid")
 
@@ -1600,6 +1595,8 @@ def allfitur_Staff():
                 core_file = file.read()
                 print(core_file)
             sys.exit()
+        elif user_input == "6":
+            main()
         else:
             print("Pilihan invalid")
 
@@ -1611,7 +1608,7 @@ def allfitur_Staff():
 def daftar_Tambah_Data():
     os.system("cls")
     while True:
-        namafile = "tampilan/all_menu_crud.txt"
+        namafile = "tampilan/all_menu_no_hapus.txt"
         with open(namafile, "r") as file:
             isi_file = file.read()
             print(isi_file)
@@ -1624,8 +1621,6 @@ def daftar_Tambah_Data():
         elif user_input == "3":
             update_data_akun()
         elif user_input == "4":
-            delete_data_akun()
-        elif user_input == "5":
             allfitur_Owner()
         else:
             print("Opsi Tidak valid")
@@ -1696,7 +1691,7 @@ def fiturpokok_staff():
 def menu_crud_role():
     os.system("cls")
     while True:
-        namafile = "tampilan/all_menu_crud.txt"
+        namafile = "tampilan/all_menu_no_hapus.txt"
         with open(namafile, "r") as file:
             isi_file = file.read()
             print(isi_file)
@@ -1710,8 +1705,6 @@ def menu_crud_role():
         elif user_input == "3":
             update_data_role()
         elif user_input == "4":
-            delete_data_role()
-        elif user_input == "5":
             fiturpokok_owner()
         else:
             print("Opsi Tidak valid")
@@ -1724,7 +1717,7 @@ def menu_crud_role():
 def menu_crud_jenis_kelamin():
     os.system("cls")
     while True:
-        namafile = "tampilan/all_menu_crud.txt"
+        namafile = "tampilan/all_menu_no_hapus.txt"
         with open(namafile, "r") as file:
             isi_file = file.read()
             print(isi_file)
@@ -1737,8 +1730,6 @@ def menu_crud_jenis_kelamin():
         elif user_input == "3":
             update_data_jenis_kelamin()
         elif user_input == "4":
-            delete_data_jenis_kelamin()
-        elif user_input == "5":
             fiturpokok_owner()
         else:
             print("Opsi Tidak valid")
@@ -1751,7 +1742,7 @@ def menu_crud_jenis_kelamin():
 def menu_crud_kecamatan():
     os.system("cls")
     while True:
-        namafile = "tampilan/all_menu_crud.txt"
+        namafile = "tampilan/all_menu_no_hapus.txt"
         with open(namafile, "r") as file:
             isi_file = file.read()
             print(isi_file)
@@ -1764,8 +1755,6 @@ def menu_crud_kecamatan():
         elif user_input == "3":
             update_data_kecamatan()
         elif user_input == "4":
-            delete_data_kecamatan()
-        elif user_input == "5":
             fiturpokok_owner()
         else:
             print("Opsi Tidak valid")
@@ -1778,7 +1767,7 @@ def menu_crud_kecamatan():
 def menu_crud_merk():
     os.system("cls")
     while True:
-        namafile = "tampilan/all_menu_crud.txt"
+        namafile = "tampilan/all_menu_no_hapus.txt"
         with open(namafile, "r") as file:
             isi_file = file.read()
             print(isi_file)
@@ -1792,8 +1781,6 @@ def menu_crud_merk():
         elif user_input == "3":
             update_data_merk()
         elif user_input == "4":
-            delete_data_merk()
-        elif user_input == "5":
             fiturpokok_owner()
         else:
             print("Opsi Tidak valid")
@@ -1834,7 +1821,7 @@ def menu_crud_supplier():
 def menu_crud_jenis_bahan():
     os.system("cls")
     while True:
-        namafile = "tampilan/all_menu_crud.txt"
+        namafile = "tampilan/all_menu_no_hapus.txt"
         with open(namafile, "r") as file:
             isi_file = file.read()
             print(isi_file)
@@ -1848,8 +1835,6 @@ def menu_crud_jenis_bahan():
         elif user_input == "3":
             update_data_jenis_bahan()
         elif user_input == "4":
-            delete_data_jenis_bahan()
-        elif user_input == "5":
             fiturpokok_owner()
         else:
             print("Opsi Tidak valid")
