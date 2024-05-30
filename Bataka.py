@@ -1331,12 +1331,13 @@ def update_data_bahan_keluar():
 
 def add_bahan_keluar_and_detail():
     os.system("cls")
+    read_data_akun()
     akun_id_akun = int(input("Enter akun_id_akun: "))
-
     id_bahan_keluar_baru = insert_data_bahan_keluar(akun_id_akun)
 
     if id_bahan_keluar_baru is not None:
         while True:
+            read_data_ketersediaan_bahan()
             id_ketersediaan_bahan = int(input("Enter id_ketersediaan_bahan: "))
             quantity = int(input("Enter quantity: "))
             deskripsi = input("Enter deskripsi: ")
