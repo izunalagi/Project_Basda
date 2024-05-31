@@ -1047,7 +1047,7 @@ def delete_data_bahan_masuk(id_bahan_masuk):
             print("Database connection closed.")
 
 
-def update_data_bahan_masuk(id_bahan_masuk, akun_id_akun):
+def update_data_bahan_masuk():
     os.system("cls")
     try:
         conn = None
