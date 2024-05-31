@@ -1,11 +1,12 @@
-+---------------------------------+
-|         Fitur Pokok             |
-+---------------------------------+
-|1. Crud Role                     |
-|2. Crud Jenis Kelamin            |
-|3. Crud Kecamatan                |          
-|4. Crud Merk                     |
-|5. Crud Supplier                 |
-|6. Crud Jenis Bahan              |              
-|7. Kembali                       |                                
-+---------------------------------+
+====================\                  FITUR POKOK             /=========================
+|                    [========================================]                         |
+|                             [ 1 ] CRUD Role                                           |
+|                             [ 2 ] CRUD Jenis Kelamin                                  |
+|                             [ 3 ] CRUD Kecamatan                                      |       
+|                             [ 4 ] CRUD Merek                                          |
+|			      [ 5 ] CRUD Supplier					|
+|	   		      [ 6 ] CRUD Jenis Bahan					|
+|			      [ 7 ] Kembali						|
+=========================================================================================
+
+                                                                  

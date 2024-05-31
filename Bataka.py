@@ -1946,7 +1946,7 @@ def menu_crud_bahan_masuk_staff():
         elif user_input == "3":
             update_data_bahan_masuk()
         elif user_input == "4":
-            menu_crud_detail_bahan_masuk_owner()
+            menu_crud_detail_bahan_masuk_staff()
         elif user_input == "5":
             allfitur_Staff()
         else:
